@@ -1,0 +1,24 @@
+#############################################################################
+# Name: Misc
+# Depends:
+#	Crystal:global/Functions
+#############################################################################
+# Description:
+# In this file there are miscelaneous keybindings, like terminal launchers,
+# screen capture, and such. Currently are included:
+#
+# Alt+~		opens/hides QuakeConsole
+# Alt+Shift+~	opens new terminal
+# Alt+:		opens/hides FvwmConsole
+# Ctrl+Win_L	opens a small red window at the location of mouse pointer
+# Print		creates screenshot
+#############################################################################
+
+### Misc keybindings ########################################################
+Key grave	A M	QuakeConsole
+Key grave	A MS	Terminal
+Key semicolon	A M	FvwmConsoleWindow
+Key Super_L	A C	ShowCursorPosition
+Key Print	A N	CreateScreenshot
+#############################################################################
+

@@ -1,0 +1,38 @@
+#############################################################################
+# Name: Pager
+#############################################################################
+# Description:
+# This file sets keys needed to switch between pages and move between them
+# windows. These are Alt+F1-F8, to switch between pages 1 through 8, and
+# Alt+Shift+F1-F8, used to move active window between pages.
+# There is also special combination Alt+Escape, which will switch between two
+# most recent pages (you can use it to quickly return to page where you were
+# working).
+#############################################################################
+
+### Page switching ##########################################################
+Key F1	A M	GotoPage 0 0
+Key F2	A M	GotoPage 1 0
+Key F3	A M	GotoPage 2 0
+Key F4	A M	GotoPage 3 0
+Key F5	A M	GotoPage 4 0
+Key F6	A M	GotoPage 5 0
+Key F7	A M	GotoPage 6 0
+Key F8	A M	GotoPage 7 0
+#############################################################################
+
+### Moving windows between pages ############################################
+Key F1	A SM	MoveToPage 0 0
+Key F2	A SM	MoveToPage 1 0
+Key F3	A SM	MoveToPage 2 0
+Key F4	A SM	MoveToPage 3 0
+Key F5	A SM	MoveToPage 4 0
+Key F6	A SM	MoveToPage 5 0
+Key F7	A SM	MoveToPage 6 0
+Key F8	A SM	MoveToPage 7 0
+#############################################################################
+
+### Switch between two most recent pages ####################################
+Key Escape A M	GotoPage prev
+#############################################################################
+

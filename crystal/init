@@ -1,0 +1,70 @@
+#############################################################################
+# Name: init
+# Needed by:
+#	Crystal:global/Variables
+#############################################################################
+# Description:
+# This is initialization file for Crystal. It loads all other configuration
+# files. If you want to tewak Crystal fo your own needs, you should start with
+# copying this file to your home directory, changing
+# $Crystal-Configuration-Path to your system directory (see below), and
+# pointing your ~/.fvwm/.fvwm2rc to a newly copied 'init' file.
+#
+# Initialization process is divided into 4 steps:
+# Step 1
+#	Set main configuration path, load file with Variables and Functions.
+#
+# Step 2
+#	Execute basic functions, such as function removing default bindings,
+#	and function which will read Debian menus (on Debian system).
+#
+# Step 3
+#	Load main configuration files: desktop configuration, colorsets, menus
+#	and styles.
+#
+# Step 4
+#	Load and show panels on screen and set various keybindings.
+#
+# Sometimes there is more than one choice for some file (for example you can
+# choose from several colorsets). These files have prefix "# or: ". You have
+# to comment out a file which is loaded by default and uncomment file which
+# you are choosing.
+#############################################################################
+
+$.
+
+
+### Step 1 ##################################################################
+SetEnv Crystal-Configuration-Path $.
+# or: SetEnv Crystal-Configuration-Path /usr/share/fvwm/crystal
+
+Read $[Crystal-Configuration-Path]/global/Variables
+Read $[Crystal-Configuration-Path]/global/Functions
+#############################################################################
+
+### Step 2 ##################################################################
+RemoveBuiltinBindings
+Debian_UpdateMenus
+#############################################################################
+
+### Step 3 ##################################################################
+#Read $[Crystal-Configuration-Path]/colorsets/DarkDesktop
+Read $[Crystal-Configuration-Path]/colorsets/DarkDesktopGray
+
+Read $[Crystal-Configuration-Path]/desktop/Crystal
+
+Read $[Crystal-Configuration-Path]/global/Menus
+Read $[Crystal-Configuration-Path]/global/Styles
+#############################################################################
+
+### Step 4 ##################################################################
+Read $[Crystal-Configuration-Path]/panels/TopBar
+Read $[Crystal-Configuration-Path]/panels/BottomBar
+
+Read $[Crystal-Configuration-Path]/keyboard/Misc
+Read $[Crystal-Configuration-Path]/keyboard/Numpad
+Read $[Crystal-Configuration-Path]/keyboard/Pager
+Read $[Crystal-Configuration-Path]/keyboard/Resizer
+Read $[Crystal-Configuration-Path]/keyboard/XMMS
+#############################################################################
+

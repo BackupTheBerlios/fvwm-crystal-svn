@@ -1,0 +1,73 @@
+#############################################################################
+# Name: Styles
+# Depends:
+#	Crystal:desktop/*
+#############################################################################
+# Description:
+# This file is a collection of styles for various applications. Usually here
+# is set a MinIcon for a program, but in some cases here are also specifis
+# settings.
+#############################################################################
+
+### Default MiniIcon ########################################################
+Style * MiniIcon MiniIcon/default.png
+#############################################################################
+
+### Settings for terminals & text-based applications ########################
+Style XTerm MiniIcon MiniIcon/xterm.png, FPOverrideGrabFocus, ResizeOutline
+Style elinks MiniIcon MiniIcon/elinks.png
+Style epic4 MiniIcon MiniIcon/epic4.png
+Style giFTcurs*	MiniIcon MiniIcon/giFT.png
+Style mutt MiniIcon MiniIcon/mutt.png
+Style slrn-pl MiniIcon MiniIcon/slrn-pl.png
+#############################################################################
+
+### Settings for XMMS #######################################################
+Style xmms StaysOnTop
+Style XMMS_Player       StartIconic, NoIcon, NoTitle, Sticky
+Style XMMS_Playlist     StartIconic, NoIcon, NoTitle, Sticky
+Style XMMS_Equalizer    StartIconic, NoIcon, NoTitle, Sticky
+#############################################################################
+
+### Settings for gkrellm ####################################################
+Style gkrellm NoTitle, StaysOnBottom, Sticky, NoIcon, NeverFocus, \
+	FixedSize, WindowListSkip
+#############################################################################
+
+### Settings for X applications #############################################
+Style Armagetron MiniIcon MiniIcon/armagetron.png
+Style Blender MiniIcon MiniIcon/blender.png, !Title, !Borders
+Style celestia MiniIcon MiniIcon/celestia.png
+Style Dcgui MiniIcon MiniIcon/dcgui.png
+Style DOSBox* MiniIcon MiniIcon/dosbox.png
+Style Gabber MiniIcon MiniIcon/gabber.png
+Style gabber MiniIcon MiniIcon/gabber.png
+Style gFTP MiniIcon MiniIcon/gftp.png
+Style gg MiniIcon MiniIcon/gg.png
+Style giFToxic MiniIcon MiniIcon/giFT.png, EWMHMiniIconOverride
+Style Gimp MiniIcon MiniIcon/gimp.png
+Style GQview MiniIcon MiniIcon/gqview.png
+Style gtk-gnutella MiniIcon MiniIcon/gtk-gnutella.png
+Style GTKtalog MiniIcon MiniIcon/gtktalog.png
+Style gtktalog MiniIcon MiniIcon/gtktalog.png
+Style jumpnbump-menu MiniIcon MiniIcon/jumpnbump.png
+Style k3b MiniIcon MiniIcon/k3b.png
+Style mozilla-bin MiniIcon MiniIcon/mozilla.png, EWMHMiniIconOverride, \
+      NoPPosition
+Style Mozilla-bin MiniIcon MiniIcon/mozilla.png, EWMHMiniIconOverride, \
+      NoPPosition
+Style MPlayer MiniIcon MiniIcon/mplayer.png
+Style OpenOffice.org* MiniIcon MiniIcon/openoffice.png
+Style psi MiniIcon MiniIcon/psi.png
+Style ROX-Filer MiniIcon MiniIcon/rox.png, EWMHMiniIconOverride
+Style Sodipodi MiniIcon MiniIcon/sodipodi.png
+Style Sylpheed MiniIcon MiniIcon/sylpheed.png
+Style TuxPaint.TuxPaint	MiniIcon MiniIcon/tuxpaint.png
+Style xqf MiniIcon MiniIcon/xqf.png
+#############################################################################
+
+### Settings for FVWM menu windows ##########################################
+Style fvwm_menu NoButton 1, NoButton 3, NoButton 4, NoButton 5, NoButton 6, \
+      NoButton 7, NoButton 8, NoButton 9,NoButton 0
+#############################################################################
+

@@ -1,0 +1,29 @@
+#############################################################################
+# Name: ApplicationMenu
+# Depends:
+#	Crystal:global/Functions
+#	Crystal:desktop/Crystal
+# Notes:
+#	Put in your ~/.fvwm/ directory
+#############################################################################
+# Description:
+# This is a sample 'ApplicationMenu' file. You should put it in your ~/.fvwm/
+# directory. When Crystal will find this file, it will load it and set this
+# menu to appear when you press left mouse button on the desktop.
+#############################################################################
+
+### /ApplicationMenu ########################################################
+DestroyMenu /ApplicationMenu
+AddToMenu /ApplicationMenu
++ "%MiniIcon/mc.png%Midninght Commander" A mc
++ "%MiniIcon/mutt.png%mutt" A mutt
++ "%MiniIcon/vim.png%gVIM" X gvim
++ "%MiniIcon/frozen-bubble.png%Frozen Bubble" X frozen-bubble
++ "%MiniIcon/lbreakout2.png%LBreakout" X lbreakout2
++ "%MiniIcon/quake2.png%Quake 2" X quake2
++ "%MiniIcon/psi.png%Psi" X psi
++ "%MiniIcon/mozilla.png%Mozilla" X mozilla
++ "%MiniIcon/gimp.png%The GIMP" X gimp
++ "%MiniIcon/debian.png%Debian menu" Popup /Debian
+#############################################################################
+

@@ -1,0 +1,49 @@
+24.03.2004 @ 00:00 Maciej Delmanowski <harnir@ble.pl>
+	* crystal/global/Functions:
+		- added functions controling panel visibility and EWMH Working
+		  Area
+		- added function 'Window_Resize_Context' which will resize
+		  selected window using different parameters, depending on
+		  either resized window is a text one or graphics one.
+		- added 'Reload-Docklet' function, which will close and reopen
+		  Docklet window
+	* crystal/global/Menus:
+		- added 'Reload Docklet' entry to '/Crystal' menu
+	* crystal/panels/:
+		- Added 'BottomBar-Single' with one long bottom panel instead
+		  of two
+		- added commands which are setting Panel Working Area to all
+		  files
+	* crystal/keyboard/:
+		- Added new file 'Resier', which sets keystrokes for resizing
+		  windows
+		- Updated Numpad, so it maximizes windows using EWMH settings
+		  by default
+	* crystal/desktop/Crystal:
+		- set Desktop Working Area; reserve some space at the right
+		  edge for gkrellm
+	* crystal/init:
+		- Registered 'BottomBar-Single'
+		- Registered 'Resizer'
+
+17.03.2004 @ 00:00 Maciej Delmanowski <harnir@ble.pl>
+	* crystal/user/:
+		- added 'ApplicationMenu' - if this file is copied to
+		  ~/.fvwm/, it will generate a sample menu opened with LMB on
+		  the desktop
+	* crystal/desktop/Crystal:
+		- added support for 'ApplicationMenu'
+	* crystal/global/Menus:
+		- Added xscreensaver menu to /Crystal menu (appears only if
+		  XScreenSaver is installed).
+	* crystal/init:
+		- Added info about multiple choices in this file, added
+		  DarkDesktopGray selected by default, commented DarkDesktop
+	* crystal/colorsets/:
+		- added 'DarkDesktopGray' colorset
+	* INSTALL:
+		- slightly edited installation instructions
+
+12.03.2004 @ 12:00 Maciej Delmanowski <harnir@ble.pl>
+	* Version 1.1
+

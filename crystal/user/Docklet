@@ -1,0 +1,88 @@
+#############################################################################
+# Name: Docklet
+# Depends:
+#	Crystal:panels/TopBar
+# Notes:
+#	Put it in your ~/.fvwm/ directory
+#############################################################################
+# Description:
+# This file is a collection of buttons for panel called Docklet. Upon startup
+# these buttons will search for specified program. If this program will be
+# found, button will setup itself so program can have his 'dockable icon'
+# swallowed by Docklet.
+# However you have to change certain settings of a program to work correctly.
+# Instructions what to change are in this file.
+# If you don't want particular program to appear on Docklet (for example it's
+# used by someone else and not you, so you don't want to deinstall it), you
+# can comment out lines for that program. See below.
+#
+# Supported programs:
+#
+# Psi
+#	It works great. You just need to turn on Docklet support in settings
+#	dialog and it will work. If you want, you can hide roster window on
+#	startup, so that Psi will not bother you.
+#
+# Gabber
+#	On the other hand, this program doesn't work so great. Dock has the
+#	same name as main roster window, so FVWM cannot choose which window to
+#	pick up and sometimes can pickup wrong one. There are two metods to
+#	avoid this:
+#	- launch gabber with option '--name', this option allows to change
+#	  name of a dock window. By default Crystal's Docklet is se to search
+#	  for a window named 'gabberdock', so when you will launch
+#	  'gabber --name gabberdock', docked window will be picked up
+#	  automatically
+#	- hide gabbers' roster window on startup - this way when you run
+#	  gabber, just one window shows on screen and it's correct one - dock
+#	  window. For this to work, you have to comment first and uncomment
+#	  second line in Gabber's part of this file.
+#
+# TleenX2
+#	Need to test it.
+#
+# GNU Gadu (gg)
+#	Need to test it.
+#
+# GNU Gadu 2 (gg2)
+#	Need to test it.
+#
+# KGet
+#	Test needed.
+#
+# xlassie
+#	Works very good. In configuration section you can specify more
+#	mailboxes than just one. Also note that previous instance of xlassie
+#	will be automatically killed at start or reload.
+#############################################################################
+
+### Psi #####################################################################
+PipeRead 'which psi > /dev/null && echo \"*Docklet: (1x1, Size 24 24, Swallow (NoClose, UseOld) \"psidock\")\"'
+#############################################################################
+
+### Gabber ##################################################################
+PipeRead 'which gabber > /dev/null && echo \"*Docklet: (1x1, Size 24 24, Swallow (NoClose, UseOld) \"gabberdock\")\"''
+#PipeRead 'which gabber > /dev/null && echo \"*Docklet: (1x1, Size 24 24, Swallow (NoClose, UseOld) \"gabber\")\"''
+#############################################################################
+
+### TleenX2 #################################################################
+PipeRead 'which tleenx > /dev/null && echo \"*Docklet: (1x1, Size 24 24, Swallow (NoClose, UseOld) \"GM_Statusdocklet\")\"'
+#############################################################################
+
+### GNU Gadu ################################################################
+PipeRead 'which gg > /dev/null && echo \"*Docklet: (1x1, Sie 24 24, Swallow (NoClose, UseOld) \"gg_status_plugin\")\"'
+#############################################################################
+
+### GNU Gadu 2 ##############################################################
+PipeRead 'which gg2 > /dev/null && echo \"*Docklet: (1x1, Size 24 24, Swallow (NoClose, UseOld) \"gg2\")\"'
+#############################################################################
+
+### KGet ####################################################################
+PipeRead 'which kget > /dev/null && echo \"*Docklet: (1x1, Size 24 24, Swallow (NoClose, UseOld) \"kget\")\"' 
+#############################################################################
+
+### xlassie #################################################################
+Exec exec killall xlassie
+PipeRead 'which xlassie > /dev/null && echo \"*Docklet: (1x1, Size 24 24, Swallow (NoClose, UseOld) \"xlassie\" \'Exec xlassie -fg gray -shape -fn \"-*-helvetica-*-r-*-*-20-*-*-*-*-*-*-*\" -file /var/mail/$USER \')\"''
+#############################################################################
+

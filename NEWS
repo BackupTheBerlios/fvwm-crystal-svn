@@ -1,0 +1,11 @@
+Here are quick news for users of old versions:
+
+- I've added binding on desktop: MMB will hide or show all panels and gkrellm
+  (if present).
+
+- There are new functions for setting/changing Working Area (see fvwm(1) for
+  details). They are used by panel hiding/showing function. There is a Desktop
+  Working Area, used when panels are hidden, and Panel Working Area used when
+  panels are visible. In both modes there is 3 pixel gap between window frame
+  and screen edge (there is a desktop space, so you can launch terminal
+  pressing RMB on it or MMB to show/hide panels).

@@ -1,0 +1,4 @@
+# Sample ~/.Xsession file to set wallpaper and start FVWM
+
+wallpaper-changer &
+exec fvwm

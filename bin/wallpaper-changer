@@ -1,0 +1,20 @@
+#!/usr/bin/perl -w
+
+use File::Find;
+
+$basedir = "$ENV{'HOME'}/wallpapers";
+
+sub process_file {
+    $filename = $File::Find::name;
+    if ( -f $filename ){
+	push(@images, $filename);
+    }
+}
+
+find(\&process_file, $basedir);
+srand;
+$index=int(rand(@images));
+
+print "The wallpaper now is $images[$index]\n";
+system "habak -i $images[$index] -S @ARGV";
+

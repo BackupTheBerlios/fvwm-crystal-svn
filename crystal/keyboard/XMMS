@@ -1,0 +1,55 @@
+#############################################################################
+# Name: XMMS
+# Depends:
+#	Crystal:global/Functions
+# 	xmms
+#	xmmsfind
+#	xmms-shell
+#	aumix
+#############################################################################
+# Description:
+# This file sets controls for XMMS player. They are the same as in player
+# window, but with Alt/Meta modifier:
+#
+# Alt+Z - Forward
+# Alt+X - Play
+# Alt+C - Pause
+# Alt+V - Stop
+# Alt+B - Backward
+#
+# There are two bindings for xmms-shell, Alt+N (Previous track) and Alt+M
+# (Next track). They will switch between songs bypassing Shuffle state, ie.
+# like normal Backward/FOrward but with Shuffle turned off.
+# Additionally there is a binding for XMMSFind plugin - Alt+J. For this to
+# work you have to activate XMMSFind in XMMS Preferences.
+#
+# There are also keys for controling volume level. They control PCM channel by
+# default:
+#
+# Alt+<		Decrease by 20%
+# Alt+Shift+<	Decrease by 10%
+# Alt+>		Incerase by 20%
+# Alt+Sift+>	Incerase by 10%
+#############################################################################
+
+### XMMS main controls ######################################################
+Key Z A M XMMS_Backward
+Key X A M XMMS_Play
+Key C A M XMMS_Pause
+Key V A M XMMS_Stop
+Key B A M XMMS_Forward
+#############################################################################
+
+### Additional controls #####################################################
+Key N A M XMMS_Previous
+Key M A M XMMS_Next
+Key J A M XMMS_Find
+#############################################################################
+
+### Volume controls #########################################################
+Key comma	A M	Volume w -20
+Key comma	A MS	Volume w -10
+Key period	A M	Volume w +20
+Key period	A MS	Volume w +10
+#############################################################################
+

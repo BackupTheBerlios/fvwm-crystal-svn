@@ -1,0 +1,136 @@
+How to install fvwm-crystal
+#############################################################################
+
+For Crystal to work you need working FVWM installation. For more experience
+you can install additional software. All is described below.
+
+
+### Installation of FVWM ####################################################
+
+FVWM is available on project homepage, http://www.fvwm.org. Additionally this
+window manager is in many distributions, so chcek yours - it can make
+installation simplier. Here is described process of installation from sources.
+
+You need at leas FVWM 2.5.8. Grab sources from:
+ftp://ftp.fvwm.org/pub/fvwm/version-2/fvwm-2.5.8.tar.gz
+
+Unpack it somewhere. In doc/patches/ directory of Crystal sources sits small
+patch for FvwmIconMan - it will add one option to this module, making it
+possible to remove iconified windows from IconMan. If you want that ability,
+copy this patch "FvwmIconMan.patch" to fvwm source tree and apply it:
+
+patch -p1 < FvwmIconMan.patch
+
+OK, FVWM is ready for configuration, so launch ./configure script. It should
+check for libraries and make Makefile scripts. Finished settings table should
+look simiraly to this:
+
+  With Gettext Native Lang Support?   yes (libc)
+  With PNG image support?             yes
+  With ReadLine sup. in FvwmConsole?  yes
+  With Shaped window support?         yes
+  With Shared memory for XImage?      yes
+  With Session Management support?    yes
+  With Mouse strokes (gestures)?      yes
+  With Xft anti-alias font support?   yes (version 2)
+  With XPM image support?             yes
+  With Xrender image support?         yes
+
+Here are included only those entries, which are needed, others can be
+available or not.
+
+If all is configured properly, you can now 'make' and 'make install' FVWM.
+Debian users can create .debs issuing command make 'deb-dist'.
+
+If all processed fine, FVWM is installed and ready. Proceed to next part...
+
+
+### Installation of additional software #####################################
+
+XMMS
+
+Good sound player. Some are claiming it because lack of a good GUI... So
+Crystal brings it's own GUI for xmms :). Player windows are hidden by default,
+you can control playback using keyboard shortcuts or panel buttons. Package
+for your distribution will be fine.
+
+XMMS-Shell
+
+Needed by Crystal to provide even more control on XMMS. Package from your
+distro should be fine.
+
+XMMSFind
+
+Good plugin for XMMS, gives you the ability to open 'Jump to' window. You can
+grab it from http://xmmsfind.sourceforge.net/; extract, compile and install
+(usual way). Now start XMMS, enable XMMSFind plugin and have fun :)
+
+aumix
+
+Sound mixer, used to change volume levels. Version from your distribution
+should be fine.
+
+aterm
+
+Default terminal emulator in Crystal; supports transparency. Your distro has
+it :)
+
+xdaliclock
+
+Small transparent clock. Included in your distro.
+
+habak
+
+Very good wallpaper changer. It has options for simple edition of wallpapers,
+make it interlaced, write text on your desktop in TTF font, etc. Unfortunately
+it's in Polish, but you just need to 'make' (needs imlib2). You can copy it
+somewhere to your $PATH directory and it works. Grab it from
+ftp://ftp.linuxpl.org/fvwm-crystal/tarballs/habak-0.2.1.tar.bz2
+
+Now it's time to install Crystal itself :)
+
+
+### Installation of Crystal #################################################
+
+It's simple. Currently there is nothing to compile, just copy everything what
+is in 'crystal/' directory to '/usr/share/fvwm/crystal'. You can copy it to
+another directory if you want, but then add correct path to your
+'~/.fvwm/.fvwm2rc' (see below). All path starting with 'crystal/' are relative
+to path where you put Crystal configuration files. Copy all scripts from
+'bin/' to '/usr/bin'.  That was a system part of install.
+
+Now the user part. Make '~/.fvwm/' directory, and create/edit file
+'~/.fvwm/.fvwm2rc'. In this file write a line below:
+
+Read /usr/share/fvwm/crystal/init
+
+Save this file. If you want to use "Docklet" for dockable program icons, such
+as Psi or Gabber, copy file 'crystal/user/Docklet' to
+'~/.fvwm/Docklet'. There is also available sample 'ApplicationPanel' file,
+which provides a small panel from where you can start programs. You can copy
+it from 'crystal/user/ApplicationPanel' to
+'~/.fvwm/ApplicationPanel'.
+
+If you want to have a menu on the desktop with LMB, copy file
+'crystal/user/ApplicationMenu' to '~/.fvwm/ApplicationMenu'. Crystal will
+automatically pick it upon next restart and set a menu for you.
+
+If you want to have transparent terminal windows, you can copy a file from
+crystal sources, 'crystal distribution/doc/examples/Xresources' to
+'~/.Xresources'. It will set transparent background and no scrollbars.
+
+You should also copy sample Xsession file, from
+'crystal distribution/doc/examples/Xsession' to '~/.Xsession'. It will set
+fvwm as default window manager and launch script 'wallpaper-changer' at the
+start of
+X session (it get's wallpapers from '~/wallpapers/' directory, put there some
+images).
+
+
+### Finish ##################################################################
+
+Now, if you are starting your X session from console, just type 'startx' and
+FVWM should start. If you use GDM/KDM/XDM, you have to select session
+'Default' (only if you don't have 'FVWM' in your session list, otherwise
+select this).
+

@@ -1,0 +1,35 @@
+What to do, what to do...
+
+- put Crystal into GNU Arch server, and make possible to create .deb, .ebuild,
+  .rpm and .tar.gz packages using only version available from GNU Arch.
+
+- we should create some replacement for 'wallpaper-changer'. I think about
+  some kind of app/script which will be able to set/select wallpapers more
+  cleverly. It can save it's settings in ~/.fvwm/ but I prefer to use/create
+  a standalone application for this purpuose.
+
+- check configuration files and documentation and remove spelling errors and
+  such. I know that my English sucks :)
+
+- Write documentation!
+
+- there is a problem with FvwmIconMan and anti-aliased TTF fonts, they are
+  visible only at 2/3 height of normal text, at least on my fvwm installation,
+  anoyne else has this? When I switch to normale X fonts, all is ok, and in
+  other places such as titlebars everything is ok... How to get rid of that
+  thing?
+
+- make new version of webpage, old sucks. It should be simplier and brighter.
+
+- Create a generator for '~/.fvwm/ApplicationPanel'. I don't have a good idea
+  how it should look like...
+
+- add more apps to '~/.fvwm/Docklet', check existing ones.
+
+- add new icons and Styles
+
+- get new icons for main panel buttons, and maybe menu entries?
+- change titlebar buttons (images)?
+
+- create some more panel sets.
+

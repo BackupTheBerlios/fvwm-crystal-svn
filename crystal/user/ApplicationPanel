@@ -1,0 +1,80 @@
+#############################################################################
+# Name: ApplicationPanel
+# Depends:
+#	Crystal:global/Functions
+#	Crystal:panels/TopBar
+# Notes:
+#	Put in your ~/.fvwm/ directory
+#############################################################################
+# Description:
+# This is a sample 'ApplicationPanel' file. It contains settings for Debian
+# button and some others, like button with Internet programs, some games and
+# utilities.
+# You can edit it to suit your own needs; however it's better to use some kind
+# of generator to create such file. One might be created someday, I hope.
+# If you want to add your own buttons or create a generator, please remember
+# that name of FvwmButtons module is 'ApplicationPanel'.
+#
+# Included buttons and their menus:
+#
+# Debian button:
+#	LMB - /Debian/Apps
+#	RMB - /Debian/Games
+#	MMB - /Debian
+#
+# Internet button:
+#	LMB - /Crystal/Internet
+#	RMB - mutt
+#
+# Utilities button:
+#	LMB - /Crystal/Utilities
+#	RMB - mc
+#
+# Games button:
+#	LMB - /Crystal/Games
+#	RMB - quake2
+#############################################################################
+
+### Debian ##################################################################
+*ApplicationPanel: (1x1), Icon "MiniIcon/debian.png", \
+Action (Mouse 1) Popup /Debian/Apps $[MenuPosition-Below], \
+Action (Mouse 2) Popup /Debian $[MenuPosition-Below], \
+Action (Mouse 3) Popup /Debian/Games $[MenuPosition-Below])
+#############################################################################
+
+### Internet ################################################################
+*ApplicationPanel: (1x1, Icon "MiniIcon/mutt.png", \
+Action (Mouse 1) Popup /Crystal/Internet $[MenuPosition-Below], \
+Action (Mouse 3) A mutt)
+
+DestroyMenu /Crystal/Internet
+AddToMenu /Crystal/Internet
++ "%MiniIcon/psi.png%Psi" X psi
++ "%MiniIcon/mozilla.png%Mozilla" X mozilla
++ "%MiniIcon/mutt.png%mutt" A mutt
+#############################################################################
+
+### Utilities ###############################################################
+*ApplicationPanel: (1x1, Icon "MiniIcon/mc.png", \
+Action (Mouse 1) Popup /Crystal/Utilities $[MenuPosition-Below], \
+Action (Mouse 3) A mc)
+
+DestroyMenu /Crystal/Utilities
+AddToMenu /Crystal/Utilities
++ "%MiniIcon/gimp.png%The GIMP" X gimp
++ "%MiniIcon/vim.png%gVIM" X gvim
++ "%MiniIcon/mc.png%Midninght Commander" A mc
+#############################################################################
+
+### Games ###################################################################
+*ApplicationPanel: (1x1, Icon "MiniIcon/quake2.png", \
+Action (Mouse 1) Popup /Crystal/Games $[MenuPosition-Below], \
+Action (Mouse 3) X quake2)
+
+DestroyMenu /Crystal/Games
+AddToMenu /Crystal/Games
++ "%MiniIcon/frozen-bubble.png%Frozen Bubble" X frozen-bubble
++ "%MiniIcon/lbreakout2.png%LBreakout" X lbreakout2
++ "%MiniIcon/quake2.png%Quake 2" X quake2
+#############################################################################
+

@@ -1,0 +1,114 @@
+#############################################################################
+# Name: BottomBar
+# Depends:
+#	Crystal:global/Functions
+#	Crystal:global/Styles
+#	Crystal:colorsets/*
+# Works with:
+#	Crystal:panels/TopBar
+#############################################################################
+# Description:
+# This file creates at bottom of the screen two separate panels, both used as
+# window lists. You can make some actions on windows:
+# - LMB will switch page to where selected window is located and focus it
+# - RMB will bring selected window to actually active page
+# - MMB will iconify selected window
+# - Alt+Shift+MMB will close selected window
+# Panels are displaying only normal windows, iconified are removed from panel.
+#
+# They look like this:
+#
+#
+#  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+#  |                                          |
+#  |  WindowPanel-Left     WindowPanel-Right  |
+#  |       |                        |         |
+#  | ################### #################### |
+#   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#
+# WindowPanel-Left
+#	By default this panel shows only windows in "graphics mode", ie.
+#	Mozilla, GIMP, etc.
+#
+# WindowPanel-Right
+#	By default it shows only "text mode" windows, ie. terminals.
+#############################################################################
+
+### Space reservation in Panel Working Area #################################
+EWMH-Panel-Bottom 32
+#############################################################################
+
+### WindowPanel-Left ########################################################
+All (WindowPanel-Left) Close
+DestroyModuleConfig WindowPanel-Left*
+
+*WindowPanel-Left: Resolution Global
+*WindowPanel-Left: UseWinList True
+*WindowPanel-Left: DontShow Class=xmms,XTerm,Eterm,Fvwm*
+*WindowPanel-Left: ShowOnlyIcons Never
+*WindowPanel-Left: DrawIcons Always
+*WindowPanel-Left: Sort Id
+*WindowPanel-Left: FollowFocus True
+*WindowPanel-Left: Format "%t"
+*WindowPanel-Left: Title ""
+PipeRead "echo *WindowPanel-Left: ButtonGeometry $((($[vp.width]-12)/2))x24"
+*WindowPanel-Left: ManagerGeometry 1x1+3-3
+*WindowPanel-Left: Font "xft:Verdana-8:Bold"
+*WindowPanel-Left: PlainButton flat
+*WindowPanel-Left: FocusButton flat
+*WindowPanel-Left: SelectButton flat
+*WindowPanel-Left: FocusAndSelectButton flat
+*WindowPanel-Left: IconButton flat
+*WindowPanel-Left: Colorset 1
+*WindowPanel-Left: PlainColorset 4
+*WindowPanel-Left: FocusColorset 5
+*WindowPanel-Left: SelectColorset 6
+*WindowPanel-Left: FocusAndSelectColorset 6
+*WindowPanel-Left: IconColorset 1
+
+*WindowPanel-Left: Action Mouse 1 A SendCommand "Function Icon_DeIconify_There"
+*WindowPanel-Left: Action Mouse 2 MS SendCommand "Close"
+*WindowPanel-Left: Action Mouse 2 A SendCommand "Iconify toggle"
+*WindowPanel-Left: Action Mouse 3 A SendCommand "Function Icon_DeIconify_Here"
+
+Module FvwmIconMan WindowPanel-Left
+#############################################################################
+
+### WindowPanel-Right #######################################################
+All (WindowPanel-Right) Close
+DestroyModuleConfig WindowPanel-Right*
+
+*WindowPanel-Right: Resolution Global
+*WindowPanel-Right: UseWinList True
+*WindowPanel-Right: DontShow Class=xmms
+*WindowPanel-Right: Show Class=XTerm,Eterm
+*WindowPanel-Right: ShowOnlyIcons Never
+*WindowPanel-Right: DrawIcons Always
+*WindowPanel-Right: Sort Id
+*WindowPanel-Right: FollowFocus True
+*WindowPanel-Right: Format "%t"
+*WindowPanel-Right: Title ""
+PipeRead "echo *WindowPanel-Right: ButtonGeometry $((($[vp.width]-12)/2))x24"
+*WindowPanel-Right: ManagerGeometry 1x1-3-3
+*WindowPanel-Right: Font "xft:Verdana-8:Bold"
+*WindowPanel-Right: PlainButton flat
+*WindowPanel-Right: FocusButton flat
+*WindowPanel-Right: SelectButton flat
+*WindowPanel-Right: FocusAndSelectButton flat
+*WindowPanel-Right: IconButton flat	
+*WindowPanel-Right: Colorset 1
+*WindowPanel-Right: PlainColorset 4
+*WindowPanel-Right: FocusColorset 5
+*WindowPanel-Right: SelectColorset 6
+*WindowPanel-Right: FocusAndSelectColorset 6
+*WindowPanel-Right: IconColorset 1
+
+*WindowPanel-Right: Action Mouse 1 A SendCommand "Function Icon_DeIconify_There"
+*WindowPanel-Right: Action Mouse 2 MS SendCommand "Close"
+*WindowPanel-Right: Action Mouse 2 A SendCommand "Iconify toggle"
+*WindowPanel-Right: Action Mouse 3 A SendCommand "Function Icon_DeIconify_Here"
+
+Module FvwmIconMan WindowPanel-Right
+#############################################################################
+

@@ -1,0 +1,18 @@
+! Sample ~/.Xresources file
+! It will set black XTerm and transparent Aterm, without scrollbars
+
+XTerm*background: black
+XTerm*foreground: white
+XTerm*font: -misc-fixed-medium-r-normal-*-18-*-*-*-*-*-*-*
+XTerm*font1: -misc-fixed-medium-r-normal-*-10-*-*-*-*-*-*-*
+XTerm*font2: -misc-fixed-medium-r-normal-*-12-*-*-*-*-*-*-*
+XTerm*font3: -misc-fixed-medium-r-normal-*-16-*-*-*-*-*-*-*
+XTerm*font4: -misc-fixed-medium-r-normal-*-20-*-*-*-*-*-*-*
+XTerm*Title: Terminal
+XTerm*scrollBar: false
+XTerm*saveLines: 1000
+
+Aterm*transparent: true
+Aterm*shading: 30
+Aterm*Title: Terminal
+

@@ -1,0 +1,90 @@
+#############################################################################
+# Name: Numpad
+# Depends:
+#	Crystal:global/Functions
+#############################################################################
+# Description:
+# This file sets keybindings for moving and manipulating windows. They are
+# setup on numeric keypad, which usually is not in use. Now, you can use it to
+# switch between windows, move them, close, maximize and other things.
+#
+# Numpad uses directional style of commands; for example, if you want to
+# switch focus to another window, you have to choose a direction from active
+# window and them press corresponding key. Directions and keys are presented
+# below:
+#
+#                           7  8  9
+#                            \ | /
+#                          4 -   - 6
+#                            / | \
+#                           1  2  3
+#
+# So, when you want to switch focus to a window above current, you have to
+# press 8 on numeric keypad, if you want to switch to window on current's
+# right, press 6, and so on, and so on.
+# Key with number 5 is used to switch between nearest windows; when you press
+# it several times, you can make easy switch between two windows.
+#
+# With Alt/Meta key pressed, normal directional keys are changed; instead of
+# focus switching, you can use them to place active window in some area on the
+# screen. For example key 5 will move window to the center of your screen, key
+# 7 to the upper-left edge, and so on.
+#
+# There are some other commands useful to perform on windows, here is complete
+# list:
+#
+# 0		Raise active window
+# .		Lower active window
+# /		Shade/unshade window
+# Alt+/		Sticky/unsticky window
+# *		Maximize window taking just free space on desktop
+# Alt+*		Maximize window using full screen space
+# Alt+-		Iconify window
+# Alt+Shift+-	Close window
+# +		Move window to default layer
+# Alt++		Always on top
+# Alt+Shift++	Always at bottom
+#
+# For Numpad keys to work NumLock must be turned off. Sometimes you have to
+# turn it on, but it's not neccessary - pressing Shift will make numpad
+# produce usual numbers ind characters nstead of Crystal commands.
+#############################################################################
+
+### Focus commands ##########################################################
+Key KP_Home		A N Window_MPFocusInDirection NorthWest
+Key KP_Left		A N Window_MPFocusInDirection West
+Key KP_End		A N Window_MPFocusInDirection SouthWest
+Key KP_Up		A N Window_MPFocusInDirection North
+Key KP_Down		A N Window_MPFocusInDirection South
+Key KP_Page_Up		A N Window_MPFocusInDirection NorthEast
+Key KP_Page_Down	A N Window_MPFocusInDirection SouthEast
+Key KP_Right		A N Window_MPFocusInDirection East
+Key KP_Begin		A N Window_MPFocusInDirection Center
+#############################################################################
+
+### Move commands ###########################################################
+Key KP_Home		A M Window_Warp_LeftTop
+Key KP_Up		A M Window_Warp_CenterTop
+Key KP_Page_Up		A M Window_Warp_RightTop
+Key KP_Left		A M Window_Warp_LeftCenter
+Key KP_Begin		A M Window_Warp_CenterCenter
+Key KP_Right		A M Window_Warp_RightCenter
+Key KP_End		A M Window_Warp_LeftBottom
+Key KP_Down		A M Window_Warp_CenterBottom
+Key KP_Page_Down	A M Window_Warp_RightBottom
+#############################################################################
+
+### Window control commands #################################################
+Key KP_Insert		WT N	Raise
+Key KP_Delete		WT N	Lower
+Key KP_Divide		WT N	WindowShade toggle
+Key KP_Divide		WT M	Stick toggle
+Key KP_Multiply		WT N	Maximize
+Key KP_Multiply		WT M	Maximize ewmhiwa
+Key KP_Subtract		A  M	Iconify true
+Key KP_Subtract		A  MS	Close
+Key KP_Add		A  N	Layer 0 4
+Key KP_Add		A  M	Layer 0 5
+Key KP_Add		A  MS	Layer 0 3
+#############################################################################
+

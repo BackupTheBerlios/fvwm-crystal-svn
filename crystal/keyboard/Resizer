@@ -1,0 +1,20 @@
+#############################################################################
+# Name: Resizer
+# Depends:
+#	Crystal:global/Functions
+#############################################################################
+# Description:
+# This file sets keys used to resize a window. Window will be resized
+# differently, depending on wheither it's a text window (terminal) or graphics
+# window (ex. Mozilla).
+#############################################################################
+
+### Window resizing #########################################################
+Key 3	A MS	Window_Resize_Context 320 200 120 5
+Key 4	A MS	Window_Resize_Context 400 300 55 20
+Key 5	A MS	Window_Resize_Context 512 384 80 50
+Key 6	A MS	Window_Resize_Context 640 480 80 25
+Key 8	A MS	Window_Resize_Context 800 600 120 40
+Key 0	A MS	Window_Resize_Context 1024 768 140 50
+#############################################################################
+

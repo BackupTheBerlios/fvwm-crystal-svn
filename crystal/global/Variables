@@ -1,0 +1,105 @@
+#############################################################################
+# Name: Variables
+# Depends:
+#	Crystal:init
+# Needed by:
+#	Crystal:global/Functions
+#	Crystal:panels/TopBar (menu definitions & ImagePath)
+#############################################################################
+# Description:
+# This file contains some variables used in Crystal enviroment. Most of them
+# are for internal use in functions and can be configured; others are set for
+# confguration developers to make editing easier.
+#############################################################################
+
+### Function: Exit ##########################################################
+# Timeout in seconds, after specified time X session is closed
+SetEnv Exit-Timeout 4
+#############################################################################
+
+### Function: A #############################################################
+# String put before specified program and arguments, thus making complete
+# command; usually a terminal
+SetEnv A-Terminal "aterm -e"
+#############################################################################
+
+### Function: Terminal ######################################################
+# Command used for opening new terminal
+SetEnv Terminal-Command "aterm -title Terminal"
+#############################################################################
+
+### Function: FvwmConsoleWindow #############################################
+# Font used by the terminal
+SetEnv FvwmConsoleWindow-Font "-misc-fixed-medium-r-normal-*-12-*-*-*-*-*-*-*"
+# Command used to launch terminal window
+SetEnv FvwmConsoleWindow-Command "aterm -geometry 40x3+0-0 -fn $[FvwmConsoleWindow-Font] -title FvwmConsoleWindow"
+#############################################################################
+
+### Function: QuakeConsole ##################################################
+# Font used by the terminal
+SetEnv QuakeConsole-Font "-misc-fixed-medium-r-normal-*-14-*-*-*-*-*-*-*"
+# Width of black border around window (for hiding free space on left and right side)
+SetEnv QuakeConsole-BorderWidth "1"
+# Command used to launch terminal window
+SetEnv QuakeConsole-Command "aterm +tr -fn $[QuakeConsole-Font] -name QuakeConsole -geometry +0+0"
+#############################################################################
+
+### Function: CreateScreenshot ##############################################
+# Directory where screenshots are saved
+SetEnv CreateScreenshot-SaveDir "$[HOME]/public_html/screenshots"
+# Format of the filename
+SetEnv CreateScreenshot-Filename "crystal2_%Y%m%d_%H%M.jpg"
+# Quality of the image
+SetEnv CreateScreenshot-Quality "80"
+#############################################################################
+
+### Function: Mixer #########################################################
+# Command used to launch mixer
+SetEnv Mixer-Command "aterm -e aumix"
+#############################################################################
+
+### Function: XMMS_* ########################################################
+# Where are located music files?
+SetEnv XMMS-Music "$[HOME]/media/music"
+# What is the mount point of your CD-ROM/DVD drive? It will be used to play
+# CD Audio tracks
+SetEnv XMMS-CDAudio "/cdrom"
+# Where are playlists?
+SetEnv XMMS-Playlists "$[HOME]/Playlists"
+# What is the filename format of saved playlists?
+SetEnv XMMS-PlaylistsFormat "playlist-`date +%F_%H:%M`.m3u"
+#############################################################################
+
+### ImagePath ###############################################################
+# This variable sets default path for images used by FVWM. Thanks to that you
+# just only need to specify $ImagePath/subdirectory/file instead of full path
+# to image file.
+# Right now ImagePath is set relative to $Crystal-Configuration-Path, which is
+# set in 'init' file.
+ImagePath $[Crystal-Configuration-Path]/images
+#############################################################################
+
+### ModulePath ##############################################################
+# This variable sets default path for FVWM modules. By default it's relative
+# to $Crystal-Configuration-Path.
+ModulePath $[Crystal-Configuration-Path]/modules:+
+#############################################################################
+
+### Menu placement definitions ##############################################
+# These variables may be used as the third argument for 'Menu' or 'Popup'
+# commands. They will place menus in selected position near the mouse pointer
+#
+# Above the mouse, centered
+SetEnv MenuPosition-Above "mouse o100+50m -100m-5p Nop"
+# Below the mouse, centered
+SetEnv MenuPosition-Below "mouse o100+50m 15p Nop"
+# Above the mouse, left-justified
+SetEnv MenuPosition-AboveLeft "mouse -100m-5p -100m-5p Nop"
+# Below the mouse, left-justified
+SetEnv MenuPosition-BelowLeft "mouse -100m-5p 15p Nop"
+# Above the mouse, right-justified
+SetEnv MenuPosition-AboveRight "mouse 15p -100m-5p Nop"
+# Below the mouse, right-justified
+SetEnv MenuPosition-BelowRight "mouse 15p 15p Nop"
+#############################################################################
+

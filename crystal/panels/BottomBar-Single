@@ -1,0 +1,72 @@
+#############################################################################
+# Name: BottomBar-Single
+# Depends:
+#	Crystal:global/Functions
+#	Crystal:global/Styles
+#	Crystal:colorsets/*
+# Works with:
+#	Crystal:panels/TopBar
+# Conflicts with:
+#	Crystal:panels/BottomBar
+#############################################################################
+# Description:
+# This file creates at bottom of the screen a long panel used as the window
+# list. You can make some actions on window buttons:
+# - LMB will switch page to where selected window is located and focus it
+# - RMB will bring selected window to actually active page
+# - MMB will iconify selected window
+# - Alt+Shift+MMB will close selected window
+# Panel is displaying only normal windows, iconified are removed from it.
+#
+# Panel look''s like this:
+#
+#
+#  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+#  |                                          |
+#  |              WindowPanel                 |
+#  |                   |                      |
+#  | ######################################## |
+#   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#############################################################################
+
+### Space reservation in Panel Working Area #################################
+EWMH-Panel-Bottom 32
+#############################################################################
+
+### WindowPanel #############################################################
+All (WindowPanel) Close
+DestroyModuleConfig WindowPanel*
+
+*WindowPanel: Resolution Global
+*WindowPanel: UseWinList True
+*WindowPanel: DontShow Class=xmms,Fvwm*
+*WindowPanel: ShowOnlyIcons Never
+*WindowPanel: DrawIcons Always
+*WindowPanel: Sort Id
+*WindowPanel: FollowFocus True
+*WindowPanel: Format "%t"
+*WindowPanel: Title ""
+PipeRead "echo *WindowPanel: ButtonGeometry $(($[vp.width]-8))x24"
+*WindowPanel: ManagerGeometry 1x1+3-3
+*WindowPanel: Font "xft:Verdana-8:Bold"
+*WindowPanel: PlainButton flat
+*WindowPanel: FocusButton flat
+*WindowPanel: SelectButton flat
+*WindowPanel: FocusAndSelectButton flat
+*WindowPanel: IconButton flat
+*WindowPanel: Colorset 1
+*WindowPanel: PlainColorset 4
+*WindowPanel: FocusColorset 5
+*WindowPanel: SelectColorset 6
+*WindowPanel: FocusAndSelectColorset 6
+*WindowPanel: IconColorset 1
+
+*WindowPanel: Action Mouse 1 A SendCommand "Function Icon_DeIconify_There"
+*WindowPanel: Action Mouse 2 MS SendCommand "Close"
+*WindowPanel: Action Mouse 2 A SendCommand "Iconify toggle"
+*WindowPanel: Action Mouse 3 A SendCommand "Function Icon_DeIconify_Here"
+
+Module FvwmIconMan WindowPanel
+#############################################################################
+

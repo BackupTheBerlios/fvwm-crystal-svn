@@ -1,0 +1,817 @@
+#############################################################################
+# Name: Functions
+# Depends:
+#	Crystal:global/Variables
+# Needed by:
+#	everything else ;)
+#############################################################################
+# Description:
+# This file is a library of functions for Crystal. Function may contain
+# parameters; when they are enclosed in parenthesis "()", they are needed by
+# the function to work, when they are in square parenthesis "[]", they can
+# be omitted.
+#
+# Before this file can be read by FVWM, you have to read another file called
+# 'Variables'. It will set some local variables for functions; without it some
+# functions may not work properly.
+# You can edit 'Variables' file and setup it to your system needs. Users can
+# copy 'Variables' file to their home directories (along with 'init' file) and
+# change settings it provides.
+#
+# Available functions and their usage:
+#
+# About-Crystal
+#	This function will show a dialog box with version numbers of Crystal
+#	and FVWM.
+#
+# RemoveBuiltinBindings
+# 	This function removes bindings described in fvwm(1) as built-in. It
+# 	should be used at the beginning of the configureation.
+#
+# StartFunction
+#	This function is executed by FVWM automatically, when all
+#	configuration files are loaded. It can be used to launch specified
+#	programs automatically.
+#
+# ExitFunction
+#	This function is execued automatically by FVWM when performing restart
+#	or closing X session. In this library it's used to close all programs
+#	and windows.
+#
+# Exit
+#	This function shows a dialog box with countdown. When counter reaches
+#	zero, FVWM is closed and X session ends. Timeout can be configured in
+#	Variables section, see below.
+#
+# A (program_name) [argument1] [argument2] [argumentn]
+#	This function executes 'aterm -e' with specified program name and it's
+#	arguments. It can be used to launch programs in terminal directly from
+#	FvwmConsole window. Command executed as terminal can be changed in
+#	variables file.
+#
+# X (program_name) [argument1] [argument2] [argumentn]
+#	Function launches specified program with optional arguments in the
+#	background. It can be used to launch programs directly from
+#	FvwmConsole, but just the "graphical" ones. Program which needs
+#	terminal to work can be executed by 'A' function.
+#
+# FvwmConsoleWindow
+#	This function opens and activates small FvwmConsole window in lower
+#	left cornet of the screen. FvwmConsole can be used to issue FVWM
+#	commands.
+#	If this window doesn't exist, it will be opened, otherwise
+#	old FvwmConsole window will be used. If this function is executed when
+#	FvwmConsole is visible, it will be hided, otherwise will be shown.
+#	Additional functions used by this function: FvwmConsoleWindow_Init,
+#	FvwmConsoleWindow_Show, FvwmConsoleWindow_Hide
+#	This function can be configured by altering some variables, see
+#	variables file.
+#
+# QuakeConsole
+#	This function creates a terminal window, with width of the screen,
+#	height a half of the screen, non-transparent backgraound. It can be
+#	used like a normal terminal window. Additionally, when this function
+#	is executed while QuakeConsole window is visible, it will be hided,
+#	otherwise it will be shown on the screen (so you can launch a command
+#	inside it, hide it and do other things). QuakeConsole function uses
+#	addiditonal functions: QuakeConsole_Init, QuakeConsole_Show and
+#	QuakeConsole_Hide. There are some variables for this function, in
+#	variables file.
+#
+# Window_Raise_LowerMoveRaise
+#	When used on a window, this function makes specified actions:
+#	- Click - raise window to the top
+#	- Move - lower window, move it and raise again
+#
+# Window_Raise_MoveRaise
+#	When used on a window, this function makes specified actions:
+#	- Click - raise window to the top
+#	- Move - move window and raise to the top
+#
+# Window_Lower_Move
+#	When used on a window, this function makes specified actions:
+#	- Click - lower window to the bottom
+#	- Move - move window and leave it "as-is", ie. not lowering or raising
+#
+# Window_Shade_Resize
+#	When used on a window, this function makes specified actions:
+#	- Click - window is shaded to title bar or unshaded
+#	- Move - enter "resize mode": move your mouse to the edge of the
+#	  window frame to select direction, and resize window
+#
+# Window_Move
+#	When used on a window, this function will let you move it on screen.
+#
+# Window_Resize
+#	When used on a window, this function will enter Resize mode and let
+#	you change this window' size.
+#
+# Window_Resize_Context (pixX) (pixY) (charX) (charY)
+#	This function will resize selected window based on the type of window.
+#	If this window is a text window (ie. terminal) it will be resized
+#	using (charX) (charY) parameters. If this window is a graph window
+#	(ex. Mozilla), it will be resized using (pixX) and (pixY) marameters.
+#
+# CreateScreenshot
+#	This function, when executed, will make a copy of a screen using scrot
+#	and save it in specified directory. You can configure this process in
+#	variables file.
+#
+# ShowCursorPosition
+#	Upon execution, this function displays in a screen a small red box,
+#	placing it in the place of mouse pointer. It can be used to quickly
+#	locate the mouse pointer.
+#
+# Thumbnail
+#	When used on a window, this function gets an image of a window
+#	contents using xwd, resizes it to 64x64 and converts it to .png using
+#	convert from ImageMagick package. After doing this, Icon of selected
+#	window is changed to use newly created "content-icon" and this window
+#	is iconified.
+#
+# DeThumbnail
+#	When used on an icon, this function de-iconifies it, removes
+#	"content-icon" file, warps mouse pointer to center of deiconified
+#	window and focuses it.
+#
+# Terminal
+#	This function launches new terminal window. Command can be set in
+#	variables file.
+#
+# Mixer
+#	This function will execute audio mixer. It can be configured in
+#	variables file.
+#
+# Volume (channel) (amount)
+#	This function sets volume using aumix. You have to specify the channel
+#	which you want to change and amount of volume you want to set.
+#	Channels are the same as aumix(1) uses, example:
+#	  v - main volume
+#	  w - PCM
+#	  c - CD Audio
+#	Amount can be number between 0 (mute) and 100 (full volume). You can
+#	also use +/- to set what amount you want to change (positive valuse
+#	are incerasing volume, and negative values are decreasing it).
+#
+# XMMS_*
+#	These functions can be used to control XMMS player remotely. Some of
+#	them are using xmms-shell, one uses xmmsfind plugin
+#	(http://xmmsfind.sf.net). Some of these functions are using variables
+#	'CVWM_XMMS_*', they can be changed in the Variables section. Here is
+#	detailed explanation about functions:
+#
+# XMMS_Play
+#	Launches XMMS and tells it to start playing. If used while playing, it
+#	pauses playback, used again continues it.
+#
+# XMMS_Pause
+#	Pauses or unpauses playback.
+#
+# XMMS_Stop
+#	Stops playback.
+#
+# XMMS_Forward
+#	Tells XMMS to select next song from playlist. If Shuffle is on, it
+#	will be next random song, if Shuffle is off, next song will be next on
+#	the list.
+#
+# XMMS_Backward
+#	Tells XMMS to select previous song from playlist. If Shuffle is on, it
+#	will be previously played song (from random), if Shuffle is off, it
+#	will be previous song on playlist from the current song.
+#
+# XMMS_Next
+#	Tells XMMS to select next song on the playlist (overriding Shuffle).
+#
+# XMMS_Previous
+#	Tells XMMS to select previous song on the playlist (overriding
+#	Shuffle).
+#
+# XMMS_Quit
+#	Closes XMMS, saves current playlist, position on it, position of
+#	windows, etc.
+#
+# XMMS_Preferences
+#	Opens Preferences dialog of the XMMS.
+#
+# XMMS_Shuffle
+#	Activates/deactivates Shuffle mode.
+#
+# XMMS_Repeat
+#	Activates/deactivates Repeat mode.
+#
+# XMMS_Find
+#	Activates XMMSFind plugin (it must be activated in XMMS to work). You
+#	can now find a song by typing in it's name or select it from a list.
+#	Pressing Escape closes XMMSFind window.
+#
+# XMMS_Toggle
+#	Toggles visibility of XMMS windows.
+#
+# XMMS_PList-generator
+#	This function generates menu /XMMS/Playlist with contents of
+#	a specified directory. After selecting a menu entry, selected playlist
+#	will be loaded into XMMS.
+#
+# XMMS_PListAdd-generator
+#	This function generates menu /XMMS/PlaylistAdd with available
+#	playlists in specified directory. When menu entry is selected,
+#	playlist is appened to current one in XMMS.
+#
+# XMMS_PListRemove
+#	Removes currently played song from the playlist.
+#
+# XMMS_PListSave
+#	This function saves current playlist in default playlists directory.
+#	Name will be made from current date and time. Default name and
+#	directory can be configured in variables file.
+#
+# Window_FocusInDirection (direction)
+#	Using this function you can switch window focus in specified direction
+#	from actually focused window. Valid directions are: North, South,
+#	East, West, NorthEast, SouthEast, SouthWest, NorthWest. You can also
+#	use Center to switch to closest window.
+#
+# Window_MPFocusInDirection (direction)
+#	Does the same as 'Window_FocusInDirection' function, but also moves
+#	mouse pointer to the center of focused window.
+#
+# Window_MPAnimatedMove (x) (y)
+#	This function can be used instead of normal AnimatedMove. When mouse
+#	pointer is inside a window moved by this function, it moves with
+#	window. In other case (when mouse pointer is outside of a moving
+#	window) it stays in place.
+#
+# Window_Warp_*
+#	These functions can be used to move active window into selected area
+#	on the screen. Valid function names are as follows (all names prefixed
+#	with 'Window_Warp_': TopLeft, TopCenter, TopRight, LeftCenter,
+#	CenterCenter, RightCenter, LeftBottom, CenterBottom, RightBottom.
+#	Function used to move windows is called 'Window_MPAnimatedMove'. After
+#	placing windows will have 3 pixel gap between screen edge and window
+#	edge.
+#
+# Window_Next
+#	This function will switch to next window in a window-ring, raise it
+#	and focus. Switching is done only on a current page, windows on other
+#	pages will be ignored.
+#
+# Window_Previous
+#	This function will switch to previous window in a window-ring, raise
+#	it and focus. Switching is done only on a current page, windows on
+#	other pages will be ignored.
+#
+# Icon_DeIconify_Here
+#	This function will deiconify iconified window and bring it to
+#	currently active page/desktop.
+#
+# Icon_DeIconify_There
+#	This function will deiconify a window to a desktop/page from where it
+#	was iconified and switch active desktop to where this window is.
+#
+# Debian_UpdateMenus
+#	This function is only valid on Debian system. It utilizes mehanism of
+#	'menu' built-in into Debian. When executed, this function will launch
+#	script called 'update-menus' with current user provileges. This will
+#	result in file ~/.fvwm/DebianMenu (only if FVWM is installed from
+#	well-made .debs). When 'update-menus' will finish it's work,
+#	Debian_UpdateMenus will Read ~/.fvwm/DebianMenu. After that you can
+#	access this menu by Popup-ing or Menu-ing a menu called '/Debian'. You
+#	can also show submenus by using, for example, 'Popup /Debian/Apps' or
+#	'Menu /Debian/Games'. See file ~/.fvwm/DebianMenu for details.
+#
+# EWMH functions are used for setting/changing Working Area. See more in
+# fvwm(1), EWMHBaseStructs function.
+#
+# EWMH-Desktop (left) (right) (top) (bottom)
+#	This function sets default Working Area. It's used by InterfaceToggle
+#	function to change working area with panels turned on and off. Also
+#	this function sets default Panel working area for the same as the
+#	Desktop working area.
+#
+# EWMH-Set-Desktop
+#	Function used internally to set Desktop Working Area.
+#
+# EWMH-Panel (left) (right) (top) (bottom)
+#	This function sets Panel Working Area. When panels are toggled by
+#	InterfaceToggle function, Working Area is switched between Desktop
+#	Working Area and Panel Working Area.
+#
+# EWMH-Panel-* (left|right|top|bottom)
+#	These functions can be used to set one side of Panel Working Area
+#	(left, right, top or bottom).
+#
+# EWMH-Set-Panel
+#	Function used internally to set Panel Working Area.
+#
+# InterfaceToggle (Key|Mouse|Stroke) (key|mouse button|stroke) (context) (modifier)
+#	This function basically can be used to toggle panels on and off. As
+#	parameters, this function reques the same bind command as the one used
+#	for execution. These values are needed to rebind Interface_Show and
+#	Interface_Hide functions (see below). When panels are shown or hidden,
+#	Working Area is dinamically changed to reflect available space on the
+#	desktop.
+#
+# Interface_Show / Interface_Hide
+#	These functions will show or hide all panels (FvwmButtons, FvwmPager,
+#	FvwmIconMan), and change Working Area respectively. Alo gkrellm will
+#	be hid or shown. These functions should be used just by
+#	InterfaceToggle function.
+#
+# Reload-Docklet
+#	This function will close extisting Docklet window and open new one. By
+#	this you can byass a bug with docked windows not swallowing after
+#	close and reopen. This function doesn't reload Docklet though.
+#############################################################################
+
+### About-Crystal ###########################################################
+DestroyFunc About-Crystal
+AddToFunc About-Crystal
++ I DestroyModuleConfig About-Crystal: *
++ I Style About-Crystal NoTitle
++ I *About-Crystal: Line center
++ I *About-Crystal: Text "Crystal for FVWM"
++ I *About-Crystal: Line center
++ I *About-Crystal: Text "Version 1.1"
++ I *About-Crystal: Line center
++ I *About-Crystal: Text "http://fvwm-crystal.linuxpl.org/"
++ I *About-Crystal: Line center
++ I *About-Crystal: Line center
++ I *About-Crystal: Line center
++ I *About-Crystal: Text "FVWM version: $[version.num] $[version.info]"
++ I *About-Crystal: Line center
++ I *About-Crystal: Text "http://www.fvwm.org/"
++ I *About-Crystal: Line center
++ I *About-Crystal: Line center
++ I *About-Crystal: Line center
++ I *About-Crystal: Button quit " Close " ^[
++ I *About-Crystal: Command Nop
++ I Module FvwmForm About-Crystal
+#############################################################################
+
+### RemoveBuiltinBindings ###################################################
+DestroyFunc RemoveBuiltinBindings
+AddToFunc RemoveBuiltinBindings
++ I Key F1	R 	A -
++ I Key Tab	A 	M -
++ I Mouse 1	R 	A -
++ I Mouse 1	T 	A -
++ I Mouse 1	FS	A -
++ I Mouse 2	FST	A -
+#############################################################################
+
+### Default system functions & Exit #########################################
+DestroyFunc StartFunction
+AddToFunc StartFunction
++ I Module FvwmCommandS
+#+ I Module FvwmTrackFocus.pl
+
+DestroyFunc ExitFunction
+AddToFunc ExitFunction
++ I All () Close
+
+DestroyFunc Exit
+AddToFunc Exit
++ I All () Close
++ I DestroyModuleConfig QuitInfo: *
++ I Style QuitInfo NoTitle
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Timeout $[Exit-Timeout] Quit "     Closing Crystal, please wait...   %%  "
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I *QuitInfo: Line center
++ I Module FvwmForm QuitInfo
+#############################################################################
+
+### Application launchers ###################################################
+DestroyFunc A
+AddToFunc A
++ I Exec exec $[A-Terminal] $*
+
+DestroyFunc X
+AddToFunc X
++ I Exec exec $*
+
+DestroyFunc Terminal
+AddToFunc Terminal
++ I Exec exec $[Terminal-Command]
+#############################################################################
+
+### FvwmConsoleWindow #######################################################
+DestroyFunc FvwmConsoleWindow
+AddToFunc FvwmConsoleWindow
++ I None (FvwmConsoleWindow) FvwmConsoleWindow_Init
++ I All (FvwmConsoleWindow, CurrentDesk) FvwmConsoleWindow_Hide
++ I TestRc (0) FvwmConsoleWindow_Show
+
+DestroyFunc FvwmConsoleWindow_Init
+AddToFunc FvwmConsoleWindow_Init
++ I Style FvwmConsoleWindow !Title, !Borders, SkipMapping,  WindowListSkip, \
+    FixedSize, VariablePosition, NoIcon, StaysOnTop, !Iconifiable, \
+    StickyAcrossPages, !Maximizable, NoHandles
++ I Style FvwmConsoleWindow WindowShadeSteps 16
++ I Style FvwmConsoleWindow WindowShadeShrinks
++ I Style FvwmConsoleWindow TitleAtBottom
++ I Module FvwmConsole -terminal $[FvwmConsoleWindow-Command]
++ I Wait FvwmConsoleWindow
++ I Style FvwmConsoleWindow FixedPosition
++ I All (FvwmConsoleWindow) MoveToDesk 666 
++ I Prev (CurrentPage) Focus
+
+DestroyFunc FvwmConsoleWindow_Show
+AddToFunc FvwmConsoleWindow_Show
++ I All (FvwmConsoleWindow) MoveToDesk
++ I All (FvwmConsoleWindow) WindowShade false
++ I All (FvwmConsoleWindow) Focus
+ 
+DestroyFunc FvwmConsoleWindow_Hide
+AddToFunc FvwmConsoleWindow_Hide
++ I All (FvwmConsoleWindow) WindowShade true South
++ I All (FvwmConsoleWindow) MoveToDesk 666 
++ I Prev (CurrentPage) Focus
+#############################################################################
+
+### QuakeConsole ############################################################
+DestroyFunc QuakeConsole
+AddToFunc QuakeConsole
++ I None (QuakeConsole) QuakeConsole_Init
++ I All (QuakeConsole, CurrentDesk) QuakeConsole_Hide
++ I TestRc (0) QuakeConsole_Show
+
+DestroyFunc QuakeConsole_Init
+AddToFunc QuakeConsole_Init
++ I Style QuakeConsole !Title, !Handles, SkipMapping, WindowListSkip, VariableSize, \
+    VariablePosition, NoIcon, StaysOnTop, !Iconifiable, EWMHMaximizeIgnoreWorkingArea, \
+    StickyAcrossPages, Maximizable
++ I Style QuakeConsole BorderWidth $[QuakeConsole-BorderWidth]
++ I Colorset 0 Foreground black, Background black, Hilight black, Shadow black
++ I Style QuakeConsole Colorset 0, HilightColorset 0, BorderColorset 0, \
+	HilightBorderColorset 0
++ I Style QuakeConsole WindowShadeSteps 64
++ I Style QuakeConsole WindowShadeShrinks
++ I Exec exec $[QuakeConsole-Command]
++ I Wait QuakeConsole 
++ I All (QuakeConsole) Maximize 100 50
++ I All (QuakeConsole) Piperead 'echo Move `expr $[vp.width] / 2 - $[w.width] / 2`p w0'
++ I Style QuakeConsole FixedPosition
++ I All (QuakeConsole) MoveToDesk 666 
++ I Style QuakeConsole FixedSize, !Maximizable
++ I Prev (CurrentPage) Focus
+
+DestroyFunc QuakeConsole_Show
+AddToFunc QuakeConsole_Show
++ I All (QuakeConsole) MoveToDesk
++ I All (QuakeConsole) Raise 
++ I All (QuakeConsole) WindowShade false
++ I All (QuakeConsole) Focus 
+ 
+DestroyFunc QuakeConsole_Hide
+AddToFunc QuakeConsole_Hide
++ I All (QuakeConsole) WindowShade true
++ I All (QuakeConsole) MoveToDesk 666 
++ I Prev (CurrentPage) Focus
+#############################################################################
+
+### Window functions ########################################################
+DestroyFunc Window_Raise_LowerMoveRaise
+AddToFunc Window_Raise_LowerMoveRaise
++ C Raise
++ M Lower
++ M Move
++ M Raise
+
+DestroyFunc Window_Raise_MoveRaise
+AddToFunc Window_Raise_MoveRaise
++ C Raise
++ M Move
++ M Raise
+
+DestroyFunc Window_Lower_Move
+AddToFunc Window_Lower_Move
++ C Lower
++ M Move
+
+DestroyFunc Window_Shade_Resize
+AddToFunc Window_Shade_Resize
++ C WindowShade toggle
++ M Resize
+
+DestroyFunc Window_Move
+AddToFunc Window_Move
++ I Move
+
+DestroyFunc Window_Resize
+AddToFunc Window_Resize
++ I Resize
+
+DestroyFunc Window_Resize_Context
+AddToFunc Window_Resize_Context
++ I Current (XTerm) Resize $2c $3c
++ I TestRc (0) Resize $0p $1p
+
+DestroyFunc Window_FocusInDirection
+AddToFunc Window_FocusInDirection
++ I Direction $0 (CurrentPage, AcceptsFocus, !Iconic) Focus
+
+DestroyFunc Window_MPFocusInDirection
+AddToFunc Window_MPFocusInDirection
++ I Direction $0 (CurrentPage, AcceptsFocus, !Iconic) Focus
++ I Current WarpToWindow 50 50
+
+DestroyFunc Window_MPAnimatedMove
+AddToFunc Window_MPAnimatedMove
++ I Current (HasPointer) AnimatedMove $0 $1 Warp
++ I TestRc (NoMatch) AnimatedMove $0 $1
+
+DestroyFunc Window_Warp_CenterCenter
+AddToFunc Window_Warp_CenterCenter
++ I Current Piperead 'echo Window_MPAnimatedMove `expr $[vp.width] / 2 - $[w.width] / 2`p `expr $[vp.height] / 2 - $[w.height] / 2`p'
+
+DestroyFunc Window_Warp_LeftCenter
+AddToFunc Window_Warp_LeftCenter
++ I Current Piperead 'echo Window_MPAnimatedMove 3p `expr $[vp.height] / 2 - $[w.height] / 2`p'
+
+DestroyFunc Window_Warp_LeftTop
+AddToFunc Window_Warp_LeftTop
++ I Current Window_MPAnimatedMove 3p 3p
+
+DestroyFunc Window_Warp_CenterTop
+AddToFunc Window_Warp_CenterTop
++ I Current Piperead 'echo Window_MPAnimatedMove `expr $[vp.width] / 2 - $[w.width] / 2`p 3p'
+
+DestroyFunc Window_Warp_RightTop
+AddToFunc Window_Warp_RightTop
++ I Current Piperead 'echo Window_MPAnimatedMove `expr $[vp.width] - 3 - $[w.width]`p 3p'
+
+DestroyFunc Window_Warp_RightCenter
+AddToFunc Window_Warp_RightCenter
++ I Current Piperead 'echo Window_MPAnimatedMove `expr $[vp.width] - 3 - $[w.width]`p `expr $[vp.height] / 2 - $[w.height] / 2`p'
+
+DestroyFunc Window_Warp_CenterBottom
+AddToFunc Window_Warp_CenterBottom
++ I Current Piperead 'echo Window_MPAnimatedMove `expr $[vp.width] / 2 - $[w.width] / 2`p `expr $[vp.height] - 3 - $[w.height]`p'
+
+DestroyFunc Window_Warp_LeftBottom
+AddToFunc Window_Warp_LeftBottom
++ I Current Piperead 'echo Window_MPAnimatedMove 5p `expr $[vp.height] - 3 - $[w.height]`p'
+
+DestroyFunc Window_Warp_RightBottom
+AddToFunc Window_Warp_RightBottom
++ I Current Piperead 'echo Window_MPAnimatedMove `expr $[vp.width] - 3 - $[w.width]`p `expr $[vp.height] - 3 - $[w.height]`p'
+
+DestroyFunc Window_Next
+AddToFunc Window_Next
++ I Next (CurrentPage, !Iconic, AcceptsFocus) Focus
++ I Current (CurrentPage, !Iconic, AcceptsFocus) Raise
+
+DestroyFunc Window_Previous
+AddToFunc Window_Previous
++ I Prev (CurrentPage, !Iconic, AcceptsFocus) Focus
++ I Current (CurrentPage, !Iconic, AcceptsFocus) Raise
+#############################################################################
+
+### CreateScreenshot ########################################################
+DestroyFunc CreateScreenshot
+AddToFunc CreateScreenshot
++ I Exec exec mkdir -p $[CreateScreenshot-SaveDir]
++ I Exec exec scrot -q $[CreateScreenshot-Quality] \
+  '$[CreateScreenshot-Filename]' -e 'cp $f $[CreateScreenshot-SaveDir] && rm $f'
+#############################################################################
+
+### ShowCursorPosition ######################################################
+DestroyFunc ShowCursorPosition
+AddToFunc ShowCursorPosition
++ I Style ShowCursorPosition StaysOnTop, !Title, !Borders
++ I Exec xmessage -name "ShowCursorPosition" -bg red -fg white \
+  -nearmouse -timeout 1 -button "" -xrm '*cursorName: none' \
+  -xrm '*borderWidth: 0' -xrm "Xmessage*form*scrollVertical: false" \
+  -xrm '*borderColor: red' -xrm '*Margin: 10' 'Cursor'
+#############################################################################
+
+### Thumbnail ###############################################################
+DestroyFunc Thumbnail
+AddToFunc Thumbnail
++ I Raise
++ I ThisWindow (!Shaded Iconifiable) PipeRead \
+    "xwd -silent -id $[w.id] | convert -resize 64x64 -frame 1x1 \
+    -mattecolor black -quality 0 xwd:- png:$[HOME]/.fvwm/icon.tmp.$[w.id].png \
+    && echo WindowStyle IconOverride, Icon $[HOME]/.fvwm/icon.tmp.$[w.id].png \
+    || echo Nop"
++ I TestRc (Match) Test (f $[HOME]/icons/overlay/$[w.class].png) PipeRead "composite -geometry +2+4 \
+    $[HOME]/icons/overlay/$[w.class].png $[HOME]/.fvwm/icon.tmp.$[w.id].png \
+    $[HOME]/.fvwm/icon.tmp.$[w.id].png && echo Nop \
+    || echo Beep"
++ I Iconify true
+
+DestroyFunc DeThumbnail
+AddToFunc DeThumbnail
++ I Iconify false
++ I DestroyWindowStyle
++ I Exec exec rm -f $HOME/.fvwm/icon.tmp.$[w.id].png
++ I WarpToWindow 50 50
++ I Focus
+#############################################################################
+
+### Sound & XMMS functions ##################################################
+DestroyFunc Mixer
+AddToFunc Mixer
++ I Exec exec $[Mixer-Command]
+
+DestroyFunc Volume
+AddToFunc Volume
++ I Exec exec aumix -$0 $1
+
+DestroyFunc XMMS_Play
+AddToFunc XMMS_Play
++ I Exec exec xmms --play-pause
+
+DestroyFunc XMMS_Pause
+AddToFunc XMMS_Pause
++ I Exec exec xmms --pause
+
+DestroyFunc XMMS_Stop
+AddToFunc XMMS_Stop
++ I Exec exec xmms --stop
+
+DestroyFunc XMMS_Forward
+AddToFunc XMMS_Forward
++ I Exec exec xmms --fwd
+
+DestroyFunc XMMS_Backward
+AddToFunc XMMS_Backward
++ I Exec exec xmms --rew
+
+DestroyFunc XMMS_Next
+AddToFunc XMMS_Next
++ I Exec exec xmms-shell -e "forward"
+
+DestroyFunc XMMS_Previous
+AddToFunc XMMS_Previous
++ I Exec exec xmms-shell -e "backward"
+
+DestroyFunc XMMS_Quit
+AddToFunc XMMS_Quit
++ I Exec exec xmms-shell -e "xmmsquit"
+
+DestroyFunc XMMS_Preferences
+AddToFunc XMMS_Preferences
++ I Exec exec xmms-shell -e "preferences"
+
+DestroyFunc XMMS_Shuffle
+AddToFunc XMMS_Shuffle
++ I Exec exec xmms-shell -e "shuffle toggle"
+
+DestroyFunc XMMS_Repeat
+AddToFunc XMMS_Repeat
++ I Exec exec xmms-shell -e "repeat toggle"
+
+DestroyFunc XMMS_Find
+AddToFunc XMMS_Find
++ I Style XmmsFind* NoTitle
++ I Style XmmsFind* StaysOnTop
++ I Style XmmsFind* Sticky
++ I Style XmmsFind* StartNormal
++ I Exec exec xmmsfind_remote
++ I Wait XmmsFind*
++ I All (XmmsFind*, CurrentPage) Focus
+
+DestroyFunc XMMS_Toggle
+AddToFunc XMMS_Toggle
++ I All (XMMS_Player) Iconify toggle
+
+DestroyFunc /XMMS/Playlist-generator
+AddToFunc /XMMS/Playlist-generator
++ I DestroyMenu recreate /XMMS/Playlist
++ I AddToMenu /XMMS/Playlist "Select playlist" Title
++ I PipeRead 'for i in $[XMMS-Playlists]/*.m3u; do \
+  name=$(basename "$i"); \
+  sname=${name%%.m3u}; \
+  echo \"AddToMenu /XMMS/Playlist \'$sname\' Exec exec xmms \'$i\'\"; done'
++ I AddToMenu /XMMS/Playlist "" TearMenuOff
++ I AddToMenu /XMMS/Playlist "CD Audio" Exec exec xmms $[XMMS-CDAudio]
++ I AddToMenu /XMMS/Playlist "Everything" Exec exec xmms $[XMMS-Music]
+
+DestroyFunc /XMMS/PlaylistAdd-generator
+AddToFunc /XMMS/PlaylistAdd-generator
++ I DestroyMenu recreate /XMMS/PlaylistAdd
++ I AddToMenu /XMMS/PlaylistAdd "Add to playlist" Title
++ I PipeRead 'for i in $[XMMS-Playlists]/*.m3u; do \
+  name=$(basename "$i"); \
+  sname=${name%%.m3u}; \
+  echo \"AddToMenu /XMMS/PlaylistAdd \'$sname\' Exec exec xmms -e \'$i\'\"; done'
+
+DestroyFunc XMMS_PListRemove
+AddToFunc XMMS_PListRemove
++ I Exec exec xmms-shell -e "remove `xmms-shell -e currenttrack | sed -e 's/Current song: //' -e 's/\..*//'`"
+
+DestroyFunc XMMS_PListSave
+AddToFunc XMMS_PListSave
++ I Exec exec xmms-shell -e "save '$[XMMS-Playlists]/$[XMMS-PlaylistsFormat]'"
+#############################################################################
+
+### Icon functions ##########################################################
+DestroyFunc Icon_DeIconify_Here
+AddToFunc Icon_DeIconify_Here
++ I Iconify False
++ I MoveToDesk 0 $[desk.n]
++ I MoveToPage $[page.nx] $[page.ny]
++ I WarpToWindow 50 50
+
+DestroyFunc Icon_DeIconify_There
+AddToFunc Icon_DeIconify_There
++ I Iconify False
++ I WarpToWindow 50 50
+#############################################################################
+
+### Debian_UpdateMenus ######################################################
+DestroyFunc Debian_UpdateMenus
+AddToFunc Debian_UpdateMenus
++ I PipeRead 'update-menus && echo \"Read $[FVWM_USERDIR]/DebianMenu quiet\"'
+#############################################################################
+
+### EWMH Base Struts functions ##############################################
+DestroyFunc EWMH-Desktop
+AddToFunc EWMH-Desktop
++ I SetEnv EWMH-BS-Desktop-Left		$0
++ I SetEnv EWMH-BS-Desktop-Right	$1
++ I SetEnv EWMH-BS-Desktop-Top		$2
++ I SetEnv EWMH-BS-Desktop-Bottom	$3
++ I EWMH-Set-Desktop
++ I SetEnv EWMH-BS-Panel-Left	$[EWMH-BS-Desktop-Left]
++ I SetEnv EWMH-BS-Panel-Right	$[EWMH-BS-Desktop-Right]
++ I SetEnv EWMH-BS-Panel-Top	$[EWMH-BS-Desktop-Top]
++ I SetEnv EWMH-BS-Panel-Bottom	$[EWMH-BS-Desktop-Bottom]
+
+DestroyFunc EWMH-Set-Desktop
+AddToFunc EWMH-Set-Desktop
++ I EWMHBaseStruts $[EWMH-BS-Desktop-Left] $[EWMH-BS-Desktop-Right] $[EWMH-BS-Desktop-Top] $[EWMH-BS-Desktop-Bottom]
+
+DestroyFunc EWMH-Panel
+AddToFunc EWMH-Panel
++ I SetEnv EWMH-BS-Panel-Left	$0
++ I SetEnv EWMH-BS-Panel-Right	$1
++ I SetEnv EWMH-BS-Panel-Top	$2
++ I SetEnv EWMH-BS-Panel-Bottom	$3
++ I EWMH-Set-Panel
+
+DestroyFunc EWMH-Panel-Left
+AddToFunc EWMH-Panel-Left
++ I SetEnv EWMH-BS-Panel-Left $0
++ I EWMH-Set-Panel
+
+DestroyFunc EWMH-Panel-Right
+AddToFunc EWMH-Panel-Right
++ I SetEnv EWMH-BS-Panel-Right $0
++ I EWMH-Set-Panel
+
+DestroyFunc EWMH-Panel-Top
+AddToFunc EWMH-Panel-Top
++ I SetEnv EWMH-BS-Panel-Top $0
++ I EWMH-Set-Panel
+
+DestroyFunc EWMH-Panel-Bottom
+AddToFunc EWMH-Panel-Bottom
++ I SetEnv EWMH-BS-Panel-Bottom $0
++ I EWMH-Set-Panel
+
+DestroyFunc EWMH-Set-Panel
+AddToFunc EWMH-Set-Panel
++ I EWMHBaseStruts $[EWMH-BS-Panel-Left] $[EWMH-BS-Panel-Right] $[EWMH-BS-Panel-Top] $[EWMH-BS-Panel-Bottom]
+
+DestroyFunc InterfaceToggle
+AddToFunc InterfaceToggle
++ I Interface_Hide $0 $1 $2 $3
+
+DestroyFunc Interface_Show
+AddToFunc Interface_Show
++ I All (FvwmPager)	Iconify false
++ I All (FvwmButtons)	Iconify false
++ I All (FvwmIconMan)	Iconify false
++ I All (gkrellm)	Iconify false
++ I EWMH-Set-Panel
++ I $0 $1 $2 $3 Interface_Hide $0 $1 $2 $3
+
+DestroyFunc Interface_Hide
+AddToFunc Interface_Hide
++ I All (FvwmPager)	Iconify true
++ I All (FvwmButtons)	Iconify true
++ I All (FvwmIconMan)	Iconify true
++ I All (gkrellm)	Iconify true
++ I EWMH-Set-Desktop
++ I $0 $1 $2 $3 Interface_Show $0 $1 $2 $3
+#############################################################################
+
+### Reload docklet ##########################################################
+DestroyFunc Reload-Docklet
+AddToFunc Reload-Docklet
++ I All (Docklet) Close
++ I Module FvwmButtons Docklet
+#############################################################################
