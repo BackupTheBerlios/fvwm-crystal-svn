@@ -4,6 +4,7 @@
 #	Crystal:global/Functions
 # Needed by:
 #	Crystal:panels/TopBar
+#	Crystal:panels/PsychoBar
 # Suggests:
 #	xmms
 #	xmmsfind
@@ -40,6 +41,14 @@
 #	This menu is similar to /XMMS/Playlist, but instead of replacing
 #	current playlist it will add selected one to actually played. CDAudio
 #	and 'Everything' are not available.
+#
+# /Volume
+#	This volume menu ported from crystal 1.0.x - needed for 
+#	PsychoBar
+#
+# /Forward
+#	Another menu from 1.0.x - it is used for track change - needed
+# 	for PsychoBar
 #############################################################################
 
 ### /Crystal ################################################################
@@ -48,7 +57,6 @@ AddToMenu /Crystal
 PipeRead 'which xscreensaver > /dev/null && echo \"+ \'XScreenSaver\' Popup /Crystal/xscreensaver\"'
 PipeRead 'which update-menus > /dev/null && echo \"+ \'Update Debian menus\' Debian_UpdateMenus\"'
 + "Identify window"	Module FvwmIdent
-+ "Reload Docklet"	Reload-Docklet
 + "Restart session"	Restart
 + "Exit from session"	Exit
 + "About Crystal" About-Crystal
@@ -92,3 +100,30 @@ AddToMenu /XMMS/PlaylistAdd
 + DynamicPopupAction Function /XMMS/PlaylistAdd-generator
 #############################################################################
 
+### /Volume #################################################################
+DestroyMenu /Volume
+AddToMenu /Volume
++ "100%%" Volume w 100
++ "90%%" Volume w 90
++ "80%%" Volume w 80
++ "70%%" Volume w 70
++ "60%%" Volume w 60
++ "50%%" Volume w 50
++ "40%%" Volume w 40
++ "30%%" Volume w 30
++ "20%%" Volume w 20
++ "10%%" Volume w 10
++ "0%%" Volume w 0
++ "" TearMenuOff
++ "%panel/volume.png%+1%%" Volume w +1
++ "%panel/volume-low.png%-1%%" Volume w -1
+#############################################################################
+
+### /Forward ################################################################
+DestroyMenu /Forward
+AddToMenu /Forward
++ "%panel/player-backward.png%Previous song" XMMS_Backward
++ "jump to song" XMMS_Find
++ "" TearMenuOff
++ "%panel/player-controls.png%Next song" XMMS_Forward
+#############################################################################
