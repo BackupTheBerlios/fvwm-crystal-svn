@@ -36,7 +36,7 @@ except:
 
 __name__ = "wal"
 __author__ = "Łukasz Strzygowski <lucass@gentoo.pl>"
-__version__ = "0.1-pre10"
+__version__ = "0.1-pre11"
 
 def parseArgv(argv):
 	""" Parse command line options. Try to expanduser paths """
@@ -159,7 +159,9 @@ def makeWallpapersList(path):
 	if os.path.isdir(path):
 		fileList = []
 		for root, dirs, files in os.walk(path):
-			for fileName in files: fileList.append(os.path.join(root, fileName))
+			for fileName in files: 
+				if guess_type(os.path.join(root,fileName))[0] in walFormats:
+					fileList.append(os.path.join(root, fileName))
 		return fileList
 
 	if guess_type(path)[0] in walFormats:
@@ -227,7 +229,7 @@ def doAction(options, config):
 		return config
 
 	if options.file:
-		os.system(tool.replace('FILENAME', "'%s'" % options.file.replace("'","\'")))
+		os.system(tool.replace('FILENAME', "%s" % config['wallpapers'][config['currentWal']].replace("'","\\'").replace(" ","\\ ")))
 		return config
 
 	if not config['wallpapers']:
@@ -256,8 +258,7 @@ def doAction(options, config):
 
 	if config['currentWal'] >= len(config['wallpapers']):
 		raise ActionError, 'Selected wallpaper not in database'
-
-	os.system(tool.replace('FILENAME', "'%s'" % config['wallpapers'][config['currentWal']].replace("'","\'")))
+	os.system(tool.replace('FILENAME', "%s" % config['wallpapers'][config['currentWal']].replace("'","\\'").replace(" ","\\ ")))
 	
 	return config
 	
