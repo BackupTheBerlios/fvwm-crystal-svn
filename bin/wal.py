@@ -16,13 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with Pyslide; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-#
-###< ChangeLog >############################
-# 28.03.2004 @ 23:56: released 0.1-pre6
-# 27.03.2004 @ 21:20: released 0.1-pre5
-# 27.03.2004 @ 18:43: released 0.1-pre4
-# 21.03.2004 @ 00:22: released 0.1-pre3
-#####################################################################
 
 import os
 import sys
@@ -187,10 +180,10 @@ def doAction(options, config):
 		return config
 
 	if options.add:
-		if not os.path.exists(path):
+		if not os.path.exists(options.add):
 			raise ActionError, 'File doesn\'t exist'
 			
-		fileList = makeWallpapersList(path)
+		fileList = makeWallpapersList(options.add)
 
 		for fileName in fileList:
 			if not fileName in config['wallpapers']:
