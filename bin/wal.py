@@ -36,7 +36,7 @@ except:
 
 __name__ = "wal"
 __author__ = "Łukasz Strzygowski <lucass@gentoo.pl>"
-__version__ = "0.1-pre8"
+__version__ = "0.1-pre10"
 
 def parseArgv(argv):
 	""" Parse command line options. Try to expanduser paths """
@@ -65,6 +65,9 @@ def parseArgv(argv):
 		help = 'clear database')
 	parser.add_option('--export', action = 'store_true', 
 		help = 'export database')
+	parser.add_option('--show-current', action = 'store_true', 
+		help = 'show path to current wallpaper')
+	
 	parser.add_option('--debug', action = 'store_true', 
 		help = 'turn debug mode on')
 	parser.add_option('--tool', action = 'store', 
@@ -112,7 +115,7 @@ def createConfiguration():
 	""" Create empty configuration. """
 
 	tools = ['hsetroot -fill FILENAME', 
-		'habak -hi FILENAME -mS',
+		'habak -ms -hi FILENAME',
 		'Esetroot FILENAME']
 
 	try:
@@ -180,6 +183,10 @@ def doAction(options, config):
 			tool.split()[0] == (options.tool or config['defaultTool'])][0]
 		except:
 			raise ParseError, 'Cannot find specified tool in database'
+
+	if options.show_current:
+		print config['wallpapers'][config['currentWal']]
+		return config
 
 	if options.export:
 		for wal in config['wallpapers']: print wal
