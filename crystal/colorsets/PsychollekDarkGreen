@@ -1,0 +1,112 @@
+#############################################################################
+# Name: PsychollekDarkGreen
+# Needed by:
+#	Crystal:desktop/*
+#	Crystal:panels/*
+# Notes:
+#	Orginal theme created by friQ, tweaked by axqman, than tweaked by psychollek 
+#	( i don't know what it even has from original theme actually since in this 
+#	version i made it from beginning :D)
+
+
+#############################################################################
+# Description:
+# This file is a collection of colorsets for FVWM. Because colorsets
+# management is very simple and they use some space in memory (depending on
+# desktop/wallpaper size), there is limited number of colorsets.
+# Crystal uses colorsets from 0 to 9, however colorset 0 is reserved for
+# QuakeConsole; it can be used elsewhere anyway (it's all black). If you want
+# to create your own colorsets and use them, you can start at number 10; if
+# you would like to make a colorset for Crystal, please use colorsets from
+# numbers 1-9, so others can switch between colorsets without need to change
+# other configuration options.
+# If you want to know more about colorsets, please read FvwmTheme(1).
+#
+# Here is list of all colorsets and where they are used:
+#
+# Colorset 1
+#	Foreground - text color in:
+#		FvwmButtons
+#		FvwmIdent
+#		FvwmIconMan
+#		FvwmForm
+#	Background - border color in:
+#		FvwmButtons
+#		FvwmIdent
+#		FvwmPager
+#		FvwmIconMan
+#	Tint - background color in:
+#		FvwmButtons
+#		FvwmIdent
+#		FvwmForm
+#		FvwmIconMan (normal and icon)
+#
+# Colorset 2
+#	Foreground - color of page separators in FvwmPager
+#	Tint - background color in FvwmPager
+#
+# Colorset 3
+#	Tint - background color of selected page in FvwmPager
+#
+# Colorset 4
+#	Foreground - text color in:
+#		inactive window titlebars
+#		inactive FvwmIconMan buttons
+#	Background - border color of inactive windows
+#	Highlight - color of 'sticky bars' on inactive windows
+#	Shadow - color of 'sticky bard' on inactive windows
+#	Tint - background color in:
+#		inactive window titlebars
+#		inactive FvwmIconMan buttons
+#
+# Colorset 5
+#	Foreground - text color in:
+#		active window titlebars
+#		active FvwmIconMan buttons
+#	Background - border color of active windows
+#	Highlight - color of 'sticky bars' on active windows
+#	Shadow - color of 'sticky bars' on active windows
+#	Tint - background color in:
+#		active window titlebars
+#		active FvwmIconMan buttons
+#
+# Colorset 6
+#	Foreground - text color of selected FvwmIconMan buttons
+#	Tint - background color of selected FvwmIconMan buttons
+#
+# Colorset 7
+#	Foreground - text color in menus
+#	Background - border color in menus
+#	Highlight - border color in menus
+#	Shadow - border color in menus
+#	Tint - background color in menus
+#
+# Colorset 8
+#	Foreground - text color of selected menu position
+#	Background - background color if selected menu position
+#
+# Colorset 9
+#	Foreground - text color of FvwmForm items
+#	Background - background color of FvwmForm items
+#	Highlight - border color of FvwmForm items
+#	Shadow - border color of FvwmForm items
+#	Tint - background color of FvwmForm items
+#############################################################################
+
+### Colorsets ###############################################################
+CleanupColorsets
+Colorset 1 Fg "white", Bg "#111111", RootTransparent, Tint "darkgreen" 50
+Colorset 2 Fg "white", RootTransparent, Tint "darkgreen" 50
+Colorset 3 RootTransparent, Tint "green" 50
+Colorset 4 Fg "gray", Bg "#333333", Hi "gray", Sh "gray", \
+	RootTransparent, Tint "darkgreen" 50
+Colorset 5 Fg "white", Bg "#111111", Hi "white", Sh "white", \
+	RootTransparent, Tint "black" 50
+Colorset 6 Fg "white", RootTransparent, Tint "green" 50
+Colorset 7 Fg "white", Bg "black", Hi "black", Sh "black", \
+	   RootTransparent, Tint "darkgreen" 50
+Colorset 8 Fg "white", Bg "darkgreen"
+Colorset 9 Fg "white", Bg "black", Hi "white", Sh "white", \
+	   RootTransparent, Tint "green" 50
+#############################################################################
+
