@@ -36,7 +36,7 @@ except:
 
 __name__ = "wal"
 __author__ = "Łukasz Strzygowski <lucass@gentoo.pl>"
-__version__ = "0.1-pre7"
+__version__ = "0.1-pre8"
 
 def parseArgv(argv):
 	""" Parse command line options. Try to expanduser paths """
@@ -112,7 +112,7 @@ def createConfiguration():
 	""" Create empty configuration. """
 
 	tools = ['hsetroot -fill FILENAME', 
-		'habak -i FILENAME -S',
+		'habak -hi FILENAME -mS',
 		'Esetroot FILENAME']
 
 	try:
