@@ -36,7 +36,7 @@ except:
 
 __name__ = "wal"
 __author__ = "Łukasz Strzygowski <lucass@gentoo.pl>"
-__version__ = "0.1-pre5"
+__version__ = "0.1-pre6"
 
 def parseArgv(argv):
 	""" Parse command line options. Try to expanduser paths """
@@ -69,6 +69,9 @@ def parseArgv(argv):
 		help = 'turn debug mode on')
 	parser.add_option('--tool', action = 'store', 
 		help = 'select tool')
+	parser.add_option('--external-tool', action = 'store', metavar='PATH',
+		help = 'give full command for tool outside database')
+	
 	parser.add_option('--config', action = 'store', default = '~/.walrc', 
 		help = 'select configuration file')
 		
@@ -169,11 +172,14 @@ def makeWallpapersList(path):
 def doAction(options, config):
 	""" Do specified in options action and return modified config """
 	
-	try:
-		tool = [tool for tool in config['tools'] if \
-		tool.split()[0] == (options.tool or config['defaultTool'])][0]
-	except:
-		raise ParseError, 'Cannot find specified tool in database'
+	if options.external_tool:
+		tool = options.external_tool
+	else:
+		try:
+			tool = [tool for tool in config['tools'] if \
+			tool.split()[0] == (options.tool or config['defaultTool'])][0]
+		except:
+			raise ParseError, 'Cannot find specified tool in database'
 
 	if options.export:
 		for wal in config['wallpapers']: print wal
