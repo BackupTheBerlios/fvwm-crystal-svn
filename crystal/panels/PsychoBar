@@ -1,0 +1,350 @@
+#############################################################################
+# Name: PsychoBar
+# Depends:
+#	Crystal:global/Functions
+#	Crystal:global/Styles
+#	Crystal:colorsets/*
+#	Crystal:global/Variables
+#	Crystal:global/Functions
+#	Crystal:global/Menus
+#	Crystal:global/Styles
+#	Crystal:colorsets/*
+#	xdaliclock
+# Suggests:
+#	xmms
+#	xmmsfind
+#	xmms-shell
+#	aumix
+# Notes:
+#	You need Crystal:user/ApplicationPanel in your ~/.fvwm/ directory for
+#	ApplicationPanel
+#	You need Crystal:user/Docklet in your ~/.fvwm/ directory for Docklet
+#############################################################################
+# Description:
+# This file creates panels at the bottom of the screen, and on the left of it
+# two of the bottom panels are windows lists. You can make some actions on windows:
+# - LMB will switch page to where selected window is located and focus it
+# - RMB will bring selected window to actually active page
+# - MMB will iconify selected window
+# - Alt+Shift+MMB will close selected window
+# Panels are displaying only normal windows, iconified are removed from panel.
+# 
+#
+# They look like this:
+#
+#
+#  |~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|
+#  | *-MainPanel               this setting is recomended         |
+#  | #                         rather for higher resolutions      |    
+#  | #                         to use it with resolutions         |
+#  | #-xmmsPanel               800x600 or lower you should edit   |
+#  | #                         geometry settings of panels at the |
+#  | *-IconPanel               bottom - in 800x600 setting is good|
+#  | *                         if you are using usually no more   |
+#  | *                         than 2 graphical windows at the    |
+#  | *                         same time                          |
+#  | #-ApplicationPanel        setting was orginally for 1600x1200|
+#  | #                         and it looks best in that          |
+#  | #                         resolution, baceuse left window    |
+#  | #                         panel is exacly 3 times longer than|
+#  | #                         right :]                           |
+#  | #                                                            |
+#  |                                                              |
+#  |                                                              |
+#  | *-Pager                                           Docklet    |
+#  | *          WindowPanel-Left     WindowPanel-Right     | Clock|
+#  | *               |                        |            |    | |
+#  | ############################# ######################******## |
+#   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# MainPanel
+#	It's the main "control center" of Crystal. 
+#	exit or restart your X Session; Debian users can
+#	from here reload their system menu.
+#
+# xmmsPanel
+#	From here you can control music using xmms
+#
+# ApplicationPanel
+#	This is a toolbar from where you can launch your preffered
+#	applications. For this to work, you have to create file called
+#	'ApplicationPanel' in your ~/.fvwm/ directory (if this file isn't
+#	there, ApplicationPanel will not show on the screen). In this file
+#	you need to have at least one button definition (see FvwmButtons(1)
+#	for details about definition). You can find a sample file in user/
+#	directory of Crystal installation.
+#	It depends only on ~/.fvwm/ApplicationPanel creator, how you are
+#	launching your programs. See this file for details.
+#
+# Pager
+#	Allows you to switch between pages of your desktop and move windows
+#	between them. You can se miniatures of your windows with program icons
+#	(so you can easily say where is which program). Using your LMB you
+#	switch to another desktop. RMB will move field of view smootchly
+#	between desktops. MMB allows you to grab particualr window and move it
+#	to another desktop, or even to actual one if you will get it outside
+#	of the pager window.
+#
+# Docklet
+#	This panel os used to place "dockable icons" for programs like Psi or
+#	Gabber. It will swallow these icons when particular program will
+#	start. However, when program will restart, these icons will be not
+#	wsallowed again (it's a bug in FVWM).
+#	For Docklet to work you need to copy file called 'Docklet' from user/
+#	directory of Crystal installation to your ~/.fvwm/ directory. When
+#	FVWM will start, this fill will be read. If programs included there
+#	are installed in the system, this fill will find them and setup
+#	separate buttons for each window. If none of included programs will be
+#	found, Docklet will be not displayed on screen.
+#	Some programs need special configuration options to work properly with
+#	Docklet, see file 'user/Docklet' for more information.
+#
+# IconPanel
+#	This panel will show iconified windows as small icons. You can make
+#	several commands on icionified windows:
+#	- LMB - deiconify a window to the current page
+#	- RMB - deiconify a window on the same page, from where it was
+#	  iconified and switch to that page
+#	- Alt+Shift+LMB - close iconified window/program
+#	IconPanel can hold 6 icons by default. If there will be more than 6,
+#	IconPanel will expand downwards.
+#
+# Clock
+#	It's a clock. It uses xdaliclock to represent itself. If you click in
+#	the correct place, you will see current date.
+#
+# WindowPanel-Left
+#	By default this panel shows only windows in "graphics mode", ie.
+#	Mozilla, GIMP, etc.
+#
+# WindowPanel-Right
+#	By default it shows only "text mode" windows, ie. terminals.
+#############################################################################
+
+### WindowPanel-Left ########################################################
+All (WindowPanel-Left) Close
+DestroyModuleConfig WindowPanel-Left*
+
+*WindowPanel-Left: Resolution Global
+*WindowPanel-Left: UseWinList True
+*WindowPanel-Left: DontShow Class=xmms,XTerm,Eterm,Fvwm*
+*WindowPanel-Left: ShowOnlyIcons Never
+*WindowPanel-Left: DrawIcons Always
+*WindowPanel-Left: Sort Id
+*WindowPanel-Left: FollowFocus True
+*WindowPanel-Left: Format "%t"
+*WindowPanel-Left: Title ""
+PipeRead "echo *WindowPanel-Left: ButtonGeometry $((($[vp.width]-568)))x24"
+*WindowPanel-Left: ManagerGeometry 1x1+3-3
+*WindowPanel-Left: Font "xft:Verdana-8:Bold"
+*WindowPanel-Left: PlainButton flat
+*WindowPanel-Left: FocusButton flat
+*WindowPanel-Left: SelectButton flat
+*WindowPanel-Left: FocusAndSelectButton flat
+*WindowPanel-Left: IconButton flat
+*WindowPanel-Left: Colorset 1
+*WindowPanel-Left: PlainColorset 4
+*WindowPanel-Left: FocusColorset 5
+*WindowPanel-Left: SelectColorset 6
+*WindowPanel-Left: FocusAndSelectColorset 6
+*WindowPanel-Left: IconColorset 1
+
+*WindowPanel-Left: Action Mouse 1 A SendCommand "Function Icon_DeIconify_There"
+*WindowPanel-Left: Action Mouse 2 MS SendCommand "Close"
+*WindowPanel-Left: Action Mouse 2 A SendCommand "Iconify toggle"
+*WindowPanel-Left: Action Mouse 3 A SendCommand "Function Icon_DeIconify_Here"
+
+Module FvwmIconMan WindowPanel-Left
+#############################################################################
+
+### WindowPanel-Right #######################################################
+All (WindowPanel-Right) Close
+DestroyModuleConfig WindowPanel-Right*
+
+*WindowPanel-Right: Resolution Global
+*WindowPanel-Right: UseWinList True
+*WindowPanel-Right: DontShow Class=xmms
+*WindowPanel-Right: Show Class=XTerm,Eterm
+*WindowPanel-Right: ShowOnlyIcons Never
+*WindowPanel-Right: DrawIcons Always
+*WindowPanel-Right: Sort Id
+*WindowPanel-Right: FollowFocus True
+*WindowPanel-Right: Format "%t"
+*WindowPanel-Right: Title ""
+*WindowPanel-Right: ButtonGeometry 344x24
+*WindowPanel-Right: ManagerGeometry 1x1-215-3
+*WindowPanel-Right: Font "xft:Verdana-8:Bold"
+*WindowPanel-Right: PlainButton flat
+*WindowPanel-Right: FocusButton flat
+*WindowPanel-Right: SelectButton flat
+*WindowPanel-Right: FocusAndSelectButton flat
+*WindowPanel-Right: IconButton flat	
+*WindowPanel-Right: Colorset 1
+*WindowPanel-Right: PlainColorset 4
+*WindowPanel-Right: FocusColorset 5
+*WindowPanel-Right: SelectColorset 6
+*WindowPanel-Right: FocusAndSelectColorset 6
+*WindowPanel-Right: IconColorset 1
+
+*WindowPanel-Right: Action Mouse 1 A SendCommand "Function Icon_DeIconify_There"
+*WindowPanel-Right: Action Mouse 2 MS SendCommand "Close"
+*WindowPanel-Right: Action Mouse 2 A SendCommand "Iconify toggle"
+*WindowPanel-Right: Action Mouse 3 A SendCommand "Function Icon_DeIconify_Here"
+
+Module FvwmIconMan WindowPanel-Right
+#############################################################################
+
+### MainPanel ###############################################################
+All (MainPanel) Close
+DestroyModuleConfig MainPanel: *
+
+*MainPanel: Geometry +3+3
+*MainPanel: Rows 1
+*MainPanel: BoxSize smart
+*MainPanel: Colorset 1
+*MainPanel: Frame 0
+*MainPanel: Padding 1 1
+*MainPanel: Font "xft:Verdana-8:Bold"
+
+*MainPanel: (1x1,  Icon "panel/crystal-logo.png", \
+Action Popup /Crystal $[MenuPosition-Below])
+
+Module FvwmButtons MainPanel
+#############################################################################
+
+### xmmsPanel ###############################################################
+All (xmmsPanel) Close
+DestroyModuleConfig xmmsPanel: *
+
+*xmmsPanel: Geometry 24x95+3+31
+*xmmsPanel: Rows 4
+*xmmsPanel: BoxSize smart
+*xmmsPanel: Colorset 1
+*xmmsPanel: Frame 0
+*xmmsPanel: Padding 1 1
+*xmmsPanel: Font "xft:Verdana-8:Bold"
+
+*xmmsPanel: (1x1,  Icon "panel/volume-low.png", \
+Action (Mouse 1) Popup /Volume $[MenuPosition-Below], \
+Action (Mouse 3) Volume w -1 \
+
+*xmmsPanel: (1x1,  Icon "panel/volume.png", \
+Action (Mouse 1) Popup /Volume $[MenuPosition-Below], \
+Action (Mouse 3) Volume w +1 \
+
+*xmmsPanel: (1x1,  Icon "panel/player-controls.png", \
+Action (Mouse 1) Popup /Forward $[MenuPosition-Below], \
+Action (Mouse 3) XMMS_Forward, \
+
+*xmmsPanel: (1x1,  Icon "panel/player-options.png", \
+Action (Mouse 1) Popup /XMMS $[MenuPosition-Below], \
+Action (Mouse 2) XMMS_Toggle, \
+Action (Mouse 3) XMMS_Play)
+
+Module FvwmButtons xmmsPanel
+#############################################################################
+
+### ApplicationPanel ########################################################
+All (ApplicationPanel) Close
+DestroyModuleConfig ApplicationPanel: *
+
+*ApplicationPanel: Rows 25
+*ApplicationPanel: Geometry +3+254
+
+*ApplicationPanel: BoxSize smart
+*ApplicationPanel: Colorset 1
+*ApplicationPanel: Padding 4 4
+*ApplicationPanel: Frame 0
+
+Read ApplicationPanel quiet
+
+Module FvwmButtons ApplicationPanel
+#############################################################################
+
+### Pager ###################################################################
+All (Pager) Close
+DestroyModuleConfig Pager*
+
+#you have to set no (number of desktops)x1 but 1x(number of desktops) in desktop/Crystal
+
+SetEnv Pager-Height "200"
+PipeRead "echo *Pager: Geometry 24x$[Pager-Height]+3-31"
+
+*Pager: MiniIcons
+*Pager: Font none
+*Pager: WindowBorderWidth 1
+*Pager: UseSkipList
+*Pager: Fore black
+*Pager: Colorset * 2
+*Pager: HilightColorset * 3
+*Pager: WindowColorsets 4 5
+
+Module FvwmPager Pager 0
+#############################################################################
+
+### Docklet #################################################################
+All (Docklet) Close
+DestroyModuleConfig Docklet: *
+
+*Docklet: Rows 1
+*Docklet: Geometry 144x24-67-3
+*Docklet: BoxSize smart
+*Docklet: Colorset 1
+*Docklet: Padding 4 4
+*Docklet: Frame 0
+
+Read Docklet quiet
+
+Module FvwmButtons Docklet
+#############################################################################
+
+### IconPanel ###############################################################
+All (IconPanel) Close
+DestroyModuleConfig IconPanel*
+
+*IconPanel: Resolution Global
+*IconPanel: UseWinList True
+*IconPanel: DontShow Class=xmms
+*IconPanel: ShowOnlyIcons True
+*IconPanel: DrawIcons True
+*IconPanel: Sort Id
+*IconPanel: FollowFocus True
+*IconPanel: Format ""
+*IconPanel: Title ""
+*IconPanel: ButtonGeometry 24x24
+*IconPanel: ManagerGeometry 0x5+3+130
+*IconPanel: Font "xft:Verdana-8"
+*IconPanel: PlainButton flat
+*IconPanel: FocusButton flat
+*IconPanel: SelectButton flat
+*IconPanel: FocusAndSelectButton flat
+*IconPanel: IconButton flat
+*IconPanel: Colorset 1
+*IconPanel: PlainColorset 4
+*IconPanel: FocusColorset 5
+*IconPanel: SelectColorset 6
+*IconPanel: FocusAndSelectColorset 6
+*IconPanel: IconColorset 1
+*IconPanel: Action Mouse 1 A SendCommand "Function Icon_DeIconify_Here"
+*IconPanel: Action Mouse 2 MS SendCommand "Close"
+*IconPanel: Action Mouse 3 A SendCommand "Function Icon_DeIconify_There"
+
+Module FvwmIconMan IconPanel
+#############################################################################
+
+### Clock ###################################################################
+All (Clock) Close
+DestroyModuleConfig Clock: *
+
+*Clock: Geometry -3-3
+*Clock: BoxSize smart
+*Clock: Colorset 1
+*Clock: Padding 4 4
+*Clock: Frame 0
+
+*Clock: (1x1, Size 60 24, Swallow (Close, UseOld) "xdaliclock" \
+'Exec xdaliclock -24 -fg gray -noseconds -transparent -font "-*-helvetica-*-r-*-*-20-*-*-*-*-*-*-*"')
+
+Module FvwmButtons Clock
+#############################################################################
+
