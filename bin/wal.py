@@ -18,20 +18,20 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 #
 ###< ChangeLog >############################
+# 28.03.2004 @ 23:56: released 0.1-pre6
 # 27.03.2004 @ 21:20: released 0.1-pre5
 # 27.03.2004 @ 18:43: released 0.1-pre4
 # 21.03.2004 @ 00:22: released 0.1-pre3
 #####################################################################
 
-
-import optparse
+import os
 import sys
 import random
-from xml.dom import minidom
-import os
-from xml.dom.ext import PrettyPrint
-from mimetypes import guess_type
+import optparse
 import traceback
+from xml.dom import minidom
+from mimetypes import guess_type
+from xml.dom.ext import PrettyPrint
 
 # I don't know if it will speed up script, why don't try.
 try: 
@@ -39,36 +39,60 @@ try:
 	psyco.full()
 except:
 	pass
-	
+
+
 __name__ = "wal"
 __author__ = "Łukasz Strzygowski <lucass@gentoo.pl>"
 __version__ = "0.1-pre5"
 
-def parseCommandLine(argv):
-	parser = optparse.OptionParser(version = '%s %s' % (__name__, __version__))
-	parser.add_option('--last', action = 'store_true',  help = 'load last wallpaper')
-	parser.add_option('--next', action = 'store_true', help = 'load next wallpaper')
-	parser.add_option('--previous', action = 'store_true', help = 'load previous wallpaper')
-	parser.add_option('--random', action = 'store_true', help = 'load random wallpaper')
-	parser.add_option('--number', action = 'store', type = 'int', help = 'load <number>th wallpaper')
-	parser.add_option('--file', action = 'store', help = 'load wallpaper from file')
+def parseArgv(argv):
+	""" Parse command line options. Try to expanduser paths """
 	
-	parser.add_option('--add', action = 'store', help = 'add wallpapers to database')
-	parser.add_option('--remove', action = 'store', help = 'remove wallpapers from database')
-	parser.add_option('--remove-current', action = 'store_true', help = 'remove current wallpaper from database')
-	parser.add_option('--clear', action = 'store_true', help = 'clear database')
-	parser.add_option('--export', action = 'store_true', help = 'export database')
-	parser.add_option('--debug', action = 'store_true', help = 'turn debug mode on')
-	parser.add_option('--tool', action = 'store', help = 'select tool')
-	parser.add_option('--config', action = 'store', default = '~/.walrc', help = 'select configuration file')
-	(options, args) = parser.parse_args(sys.argv)
+	parser = optparse.OptionParser(version = '%s %s' % (__name__, __version__))
+	
+	parser.add_option('--last', action = 'store_true', 
+		help = 'load last wallpaper')
+	parser.add_option('--next', action = 'store_true', 
+		help = 'load next wallpaper')
+	parser.add_option('--previous', action = 'store_true', 
+		help = 'load previous wallpaper')
+	parser.add_option('--random', action = 'store_true', 
+		help = 'load random wallpaper')
+	parser.add_option('--number', action = 'store', type = 'int', 
+		help = 'load <number>th wallpaper')
+	parser.add_option('--file', action = 'store', default = '',
+		help = 'load wallpaper from file')
+	parser.add_option('--add', action = 'store', default = '',
+		help = 'add wallpapers to database')
+	parser.add_option('--remove', action = 'store', default = '',
+		help = 'remove wallpapers from database')
+	parser.add_option('--remove-current', action = 'store_true', 
+		help = 'remove current wallpaper from database')
+	parser.add_option('--clear', action = 'store_true', 
+		help = 'clear database')
+	parser.add_option('--export', action = 'store_true', 
+		help = 'export database')
+	parser.add_option('--debug', action = 'store_true', 
+		help = 'turn debug mode on')
+	parser.add_option('--tool', action = 'store', 
+		help = 'select tool')
+	parser.add_option('--config', action = 'store', default = '~/.walrc', 
+		help = 'select configuration file')
+		
+	(options, args) = parser.parse_args(argv)
 	
 	options.config = os.path.expanduser(options.config)
+	options.add = os.path.expanduser(options.add)
+	options.remove = os.path.expanduser(options.remove)
+	options.file = os.path.expanduser(options.file)
+	
 	return options
 
 class ParseError(Exception): pass
 
 def loadConfiguration(path):
+	""" Load configuration from file. """
+
 	assert(os.path.exists(path))
 	
 	try:
@@ -89,6 +113,8 @@ def loadConfiguration(path):
 		'tools': tools, 'defaultTool': defaultTool}
 
 def createConfiguration():
+	""" Create empty configuration. """
+
 	tools = ['hsetroot -fill FILENAME', 
 		'habak -i FILENAME -S',
 		'Esetroot FILENAME']
@@ -102,6 +128,8 @@ def createConfiguration():
 	return {'wallpapers': [], 'currentWal': 0, 'tools': tools, 'defaultTool': defTool}
 
 def saveConfiguration(config, path):
+	""" Save configuration to file. """
+	
 	document = minidom.Document()
 	cfgNode = document.createElement('config')
 	document.appendChild(cfgNode)
@@ -122,12 +150,11 @@ def saveConfiguration(config, path):
 	PrettyPrint(document, open(path, 'w'))
 
 
-def setWallpaper(tool, path):
-	os.system(tool.replace('FILENAME', path))
-	
 class ActionError(Exception): pass
 
 def makeWallpapersList(path):
+	""" Do a wallpaper list: from directory, file with list and from image. """
+	
 	walFormats = ['image/jpeg', 'image/png']
 
 	if os.path.isdir(path):
@@ -147,17 +174,19 @@ def makeWallpapersList(path):
 
 		
 def doAction(options, config):
-	tool = [tool for tool in config['tools'] if \
+	""" Do specified in options action and return modified config """
+	
+	try:
+		tool = [tool for tool in config['tools'] if \
 		tool.split()[0] == (options.tool or config['defaultTool'])][0]
-
-	walFormats = ['image/jpeg', 'image/png']
+	except:
+		raise ParseError, 'Cannot find specified tool in database'
 
 	if options.export:
 		for wal in config['wallpapers']: print wal
 		return config
 
 	if options.add:
-		path = os.path.expanduser(options.add)
 		if not os.path.exists(path):
 			raise ActionError, 'File doesn\'t exist'
 			
@@ -172,13 +201,12 @@ def doAction(options, config):
 	if options.remove_current:
 		options.remove = config['currentWal']
 		
-	if not options.remove is None:
+	if not options.remove is None and options.remove != '':
 		try:
 			path = config['wallpapers'][int(options.remove)]
 		except IndexError:
 			raise ActionError, 'No such wallpaper in database.'
 		except ValueError:
-			path = os.path.expanduser(options.remove)
 			if not os.path.exists(path):
 				raise ActionError, 'File doesn\'t exist'
 				
@@ -187,15 +215,13 @@ def doAction(options, config):
 			config['wallpapers'].remove(fileName)
 		return config
 
-
-	
 	if options.clear:
 		config['wallpapers'] = []
 		config['currentWal'] = 0
 		return config
 
 	if options.file:
-		setWallpaper(tool, options.file)
+		os.system(tool.replace('FILENAME', options.file))
 		return config
 
 	if not config['wallpapers']:
@@ -225,13 +251,13 @@ def doAction(options, config):
 	if config['currentWal'] >= len(config['wallpapers']):
 		raise ActionError, 'Selected wallpaper not in database'
 
-
-	setWallpaper(tool, config['wallpapers'][config['currentWal']])
+	os.system(tool.replace('FILENAME', config['wallpapers'][config['currentWal']]))
 	
 	return config
 	
 def main(argv = sys.argv):
-	options = parseCommandLine(argv)
+	""" Parse args, load config, perform action, save config """
+	options = parseArgv(argv)
 
 	try:
 		if not os.path.exists(options.config):
