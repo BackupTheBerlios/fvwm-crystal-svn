@@ -36,7 +36,7 @@ except:
 
 __name__ = "wal"
 __author__ = "Łukasz Strzygowski <lucass@gentoo.pl>"
-__version__ = "0.1-pre6"
+__version__ = "0.1-pre7"
 
 def parseArgv(argv):
 	""" Parse command line options. Try to expanduser paths """
@@ -220,7 +220,7 @@ def doAction(options, config):
 		return config
 
 	if options.file:
-		os.system(tool.replace('FILENAME', options.file))
+		os.system(tool.replace('FILENAME', "'%s'" % options.file.replace("'","\'")))
 		return config
 
 	if not config['wallpapers']:
@@ -250,7 +250,7 @@ def doAction(options, config):
 	if config['currentWal'] >= len(config['wallpapers']):
 		raise ActionError, 'Selected wallpaper not in database'
 
-	os.system(tool.replace('FILENAME', config['wallpapers'][config['currentWal']]))
+	os.system(tool.replace('FILENAME', "'%s'" % config['wallpapers'][config['currentWal']].replace("'","\'")))
 	
 	return config
 	
