@@ -1,3 +1,8 @@
+29.03.2004 @ 00:20 Łukasz Strzygowski <lucass@gentoo.ppl>
+	* bin/wal.py:
+		- code cleanup, some improvements. probably still contains
+		  a lot of bugs.
+
 27.03.2004 @ 21:25 Łukasz Strzygowski <lucass@gentoo.pl>
 	* bin/wal.py:
 		- initial import. probably contains a lot of bugs. 
